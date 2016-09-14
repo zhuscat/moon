@@ -1,0 +1,100 @@
+$col-number: 24;
+$padding: 16px;
+
+@mixin make-column($class) {
+  @for $i from 1 through $col-number {
+    .col-#{$class}-#{$i} {
+      width: 100% * $i / $col-number;
+    }
+  }
+
+  @for $i from 1 through $col-number {
+    .col-#{$class}-push-#{$i} {
+      left: 100% * $i / $col-number;
+    }
+  }
+
+  @for $i from 1 through $col-number {
+    .col-#{$class}-pull-#{$i} {
+      left: -100% * $i / $col-number;
+    }
+  }
+
+  @for $i from 1 through $col-number {
+    .col-#{$class}-offset-#{$i} {
+      margin-left: 100% * $i / $col-number;
+    }
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.row {
+  padding-top: $padding;
+  padding-bottom: $padding;
+}
+
+.row::before,
+.row::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+[class*='col-'] {
+  vertical-align: middle;
+  float: left;
+  min-height: 1px;
+  padding-left: $padding;
+  padding-right: $padding;
+}
+
+// make .col-*
+
+@for $i from 1 through $col-number {
+  .col-#{$i} {
+    width: 100% * $i / $col-number;
+  }
+}
+
+// make .col-push-*
+
+@for $i from 1 through $col-number {
+  .col-push-#{$i} {
+    left: 100% * $i / $col-number;
+  }
+}
+
+// make .col-pull-*
+
+@for $i from 1 through $col-number {
+  .col-pull-#{$i} {
+    left: -100% * $i / $col-number;
+  }
+}
+
+// make .col-offset-*
+
+@for $i from 1 through $col-number {
+  .col-offset-#{$i} {
+    margin-left: 100% * $i / $col-number;
+  }
+}
+
+// Grid system for extra small screen like smartphone
+@include make-column(xs);
+
+
+@media (min-width:768px) {
+  @include make-column(sm);
+}
+
+@media (min-width:992px) {
+  @include make-column(md);
+}
+
+@media (min-width:1200px) {
+  @include make-column(lg);
+}

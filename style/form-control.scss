@@ -1,0 +1,26 @@
+@import "./variables";
+
+%zc-label-base {
+  vertical-align: middle;
+  font-size: $base-font-size;
+  line-height: $line-height-base;
+  display: block;
+}
+
+.zc-label {
+  @extend %zc-label-base;
+  // padding: $padding-em;
+  line-height: $input-height-default;
+  text-align: right;
+}
+
+.zc-label-stacked {
+  @extend %zc-label-base;
+  text-align: left;
+  margin-bottom: 8px;
+}
+
+.zc-form-control-feedback {
+  margin-top: 8px;
+  color: $error-color;
+}

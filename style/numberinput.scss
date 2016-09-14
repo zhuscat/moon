@@ -1,0 +1,88 @@
+@import "./variables";
+
+%zc-number-input-wrapper-base {
+  font-size: $base-font-size;
+  border-radius: 2px;
+  border: 1px solid $border-gary-color;
+  line-height: $input-height-default;
+  height: $input-height-default;
+  color: $primary-font-color;
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  transition: $base-transition;
+  margin-right: 16px;
+  &:last-child {
+    margin-right: 0;
+  }
+  &:hover {
+    border-color: $primary-color;
+  }
+
+  &:hover .zc-number-input-down {
+    opacity: 1;
+  }
+
+  &:hover .zc-number-input-up {
+    opacity: 1;
+  }
+}
+
+.zc-number-input-wrapper {
+  @extend %zc-number-input-wrapper-base;
+}
+
+.zc-number-input-wrapper-active {
+  @extend %zc-number-input-wrapper-base;
+  border-color: $primary-color;
+}
+
+.zc-number-input {
+  width: 80px;
+  border: none;
+  line-height: $input-height-default;
+  // padding: $padding-em;
+  color: $primary-font-color;
+  text-align: center;
+  outline: none;
+}
+
+.zc-number-input-down, .zc-number-input-up {
+  opacity: 0;
+  width: 20px;
+  height: 100%;
+  text-align: center;
+  vertical-align: middle;
+  line-height: $input-height-default;
+  cursor: pointer;
+  position: absolute;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+  transition: $base-transition;
+  &:hover {
+    color: $primary-color;
+  }
+}
+
+.zc-number-input-button-disabled {
+  background-color: $primary-gary-color;
+  color: $disabled-font-color;
+  &:hover {
+    color: $disabled-font-color;
+  }
+  cursor: not-allowed;
+}
+
+.zc-number-input-down {
+  top: 0;
+  left: 0;
+  border-right: 1px solid $border-gary-color;
+}
+
+.zc-number-input-up {
+  top: 0;
+  right: 0;
+  border-left: 1px solid $border-gary-color;
+}

@@ -1,0 +1,30 @@
+@mixin generate-normal-status-button($status, $color) {
+  .zc-button-normal.zc-button-status-#{$status} {
+    &:hover {
+      color: $color;
+      border-color: $color;
+      background-color: #fff;
+    }
+  }
+}
+
+@mixin generate-primary-status-button($status, $color, $light-color) {
+  .zc-button-primary.zc-button-status-#{$status} {
+    border-color: $color;
+    background-color: $color;
+    &:hover {
+      background-color: $light-color;
+    }
+  }
+}
+
+@mixin generate-hollow-status-button($status, $color) {
+  .zc-button-hollow.zc-button-status-#{$status} {
+    border-color: $color;
+    color: $color;
+    &:hover {
+      color: #fff;
+      background-color: $color;
+    }
+  }
+}

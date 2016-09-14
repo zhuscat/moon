@@ -1,0 +1,53 @@
+// Colors
+// -----------------------------
+
+$primary-color: #2196f3;
+$primary-color-light: lighten($primary-color, 5%);
+$primary-color-lighter: lighten($primary-color, 35%);
+$primary-color-light-lighter: lighten($primary-color, 42%);
+$primary-gary-color: #f7f7f7;
+$darker-gary-color: #f2f2f2;
+$border-gary-color: #d9d9d9;
+$primary-font-color: #666;
+$sup-font-color: #999;
+$disabled-font-color: #ccc;
+
+$success-color: #4caf50;
+$warning-color: #ffb300;
+$error-color: #e53935;
+
+$success-color-light: lighten($success-color, 5%);
+$warning-color-light: lighten($warning-color, 5%);
+$error-color-light: lighten($error-color, 5%);
+
+$status-list: (success, $success-color, $success-color-light), (warning, $warning-color, $warning-color-light), (error, $error-color, $error-color-light);
+
+// Typography
+// --------------------------------
+
+$font-family-base: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+$small-font-size: 12px;
+$base-font-size: 14px;
+$mid-font-size: 16px;
+$line-height-base: 1.428571429;
+$line-height-computed: floor($base-font-size * $line-height-base);
+
+$base-box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px;
+$base-transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+
+// margin
+$small-margin: 8px;
+$base-margin: 16px;
+
+// padding
+$padding-em: 0.4em 0.6em;
+
+// Forms
+// -----------------------------
+$input-height-default: 28px;
+$input-height-large: 32px;
+$input-height-small: 22px;
+
+// border
+// -----------------------------
+$border-radius-default: 4px;

@@ -1,0 +1,163 @@
+@import "./variables";
+
+%zc-menu-item-base {
+  height: 100%;
+  min-width: 48px;
+  line-height: 48px;
+  text-align: center;
+  font-size: $mid-font-size;
+  color: $primary-font-color;
+  padding: 0 0.6em;
+  display: inline-block;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: $base-transition;
+}
+
+.zc-menu-default {
+  height: 48px;
+  vertical-align: middle;
+  background-color: #fff;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.zc-menu-item-default {
+  @extend %zc-menu-item-base;
+}
+
+.zc-menu-item-default-active, .zc-menu-item-default:hover {
+  color: $primary-color;
+  border-bottom: 2px solid $primary-color;
+}
+
+.zc-sub-menu-item-default {
+  @extend %zc-menu-item-base;
+  position: relative;
+}
+
+.zc-menu-item-default-disabled {
+  color: $disabled-font-color;
+  cursor: not-allowed;
+  &:hover {
+    color: $disabled-font-color;
+    border-bottom: none;
+  }
+}
+
+.zc-sub-menu-item-default-active, .zc-sub-menu-item-default:hover {
+  color: $primary-color;
+  border-bottom: 2px solid $primary-color;
+}
+
+.zc-sub-menu-item-default-disabled {
+  color: $disabled-font-color;
+  cursor: not-allowed;
+  &:hover {
+    color: $disabled-font-color;
+    border-bottom: none;
+  }
+}
+
+.zc-sub-menu-item-title+i {
+  margin-left: 8px;
+}
+
+.zc-popover-menu {
+  min-width: 200px;
+  border-radius: 4px;
+  position: absolute;
+  box-shadow: $base-box-shadow;
+  opacity: 0;
+  background-color: #fff;
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: $base-transition;
+
+  .zc-menu-item-default, .zc-sub-menu-item-default {
+    width: 100%;
+    color: $primary-font-color;
+    padding: 0;
+    border-bottom: none;
+  }
+
+  .zc-menu-item-default:hover, .zc-sub-menu-item-default:hover {
+    background-color: $primary-color-light-lighter;
+    color: $primary-color;
+    border-bottom: none;
+  }
+
+  .zc-menu-item-default-active, .zc-sub-menu-item-default-active {
+    background-color: #fff;
+    color: $primary-color;
+  }
+}
+
+.zc-popover-menu-show {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+.zc-sub-menu-drop-down {
+  width: 100%;
+  border: 1px solid $border-gary-color;
+  border-radius: 4px;
+  position: absolute;
+  left: 0;
+  overflow: hidden;
+  box-shadow: $base-box-shadow;
+  transform-origin: top;
+  transition: $base-transition;
+
+  &.zc-sub-menu-drop-down-open {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+
+  .zc-menu-item-default, .zc-sub-menu-item-default {
+    width: 100%;
+    color: $primary-font-color;
+    padding: 0;
+    border-bottom: none;
+  }
+
+  .zc-menu-item-default:hover, .zc-sub-menu-item-default:hover {
+    background-color: $primary-color-light-lighter;
+    color: $primary-color;
+    border-bottom: none;
+  }
+
+  .zc-menu-item-default-active, .zc-sub-menu-item-default-active {
+    background-color: #fff;
+    color: $primary-color;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+.zc-popover {
+  .zc-menu-item-default, .zc-sub-menu-item-default {
+    width: 100%;
+    color: $primary-font-color;
+    padding: 0;
+    border-bottom: none;
+  }
+
+  .zc-menu-item-default:hover, .zc-sub-menu-item-default:hover {
+    background-color: $primary-color-light-lighter;
+    color: $primary-color;
+    border-bottom: none;
+  }
+
+  .zc-menu-item-default-active, .zc-sub-menu-item-default-active {
+    background-color: #fff;
+    color: $primary-color;
+  }
+}

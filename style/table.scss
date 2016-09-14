@@ -1,0 +1,40 @@
+@import "./variables";
+
+.zc-table {
+  width: 100%;
+  border: 1px solid $border-gary-color;
+  border-radius: 2px;
+  color: $primary-font-color;
+  font-size: $base-font-size;
+  border-collapse: collapse;
+}
+
+%zc-table-tr-base {
+  border: 1px solid $border-gary-color;
+
+  &:hover {
+    background-color: $primary-color-lighter;
+  }
+}
+
+.zc-table-tr {
+  @extend %zc-table-tr-base;
+}
+
+.zc-table-tr-stripped {
+  @extend %zc-table-tr-base;
+  &:nth-of-type(odd) {
+    background-color: $primary-color-light-lighter;
+  }
+  &:hover {
+    background-color: $primary-color-lighter;
+  }
+}
+
+.zc-table-thead-td {
+  font-weight: bold;
+}
+
+.zc-table-td, .zc-table-thead-td {
+  padding: 0.6em 0.4em;
+}

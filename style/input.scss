@@ -1,0 +1,26 @@
+@import "./variables";
+
+.zc-input {
+  width: 100%;
+  color: $primary-font-color;
+  font-size: $base-font-size;
+  line-height: $line-height-base;
+  // padding: $padding-em;
+  padding: 0 0.4em;
+  line-height: $input-height-default;
+  border-radius: 2px;
+  border: 1px solid $border-gary-color;
+  outline: none;
+  transition: $base-transition;
+  &:focus {
+    border-color: $primary-color;
+  }
+}
+
+.zc-input-readonly {
+  background-color: $primary-gary-color;
+  color: $disabled-font-color;
+  &:focus {
+    border-color: $border-gary-color;
+  }
+}

@@ -1,0 +1,86 @@
+@import "./variables";
+
+.zc-select-wrapper {
+  width: 100%;
+  position: relative;
+}
+
+// TODO: 从 %input-base 继承
+.zc-select {
+  width: 100%;
+  color: $primary-font-color;
+  font-size: $base-font-size;
+  line-height: $input-height-default;
+  padding: 0 0.4em;
+  border-radius: 2px;
+  border: 1px solid $border-gary-color;
+  outline: none;
+  transition: $base-transition;
+  cursor: pointer;
+  position: relative;
+  &:focus {
+    border-color: $primary-color;
+  }
+}
+
+.zc-select-disabled {
+  color: $disabled-font-color;
+  background-color: $primary-gary-color;
+}
+
+.zc-select-icon {
+  right: 8px;
+  top: 50%;
+  vertical-align: middle;
+  position: absolute;
+  transform: translateY(-50%);
+  transition: $base-transition;
+}
+
+.zc-select-icon-open {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.zc-select-items {
+  width: 100%;
+  max-height: 150px;
+  border: 1px solid $border-gary-color;
+  background-color: #fff;
+  border-radius: 2px;
+  margin-top: 8px;
+  box-shadow: $base-box-shadow;
+  position: absolute;
+  opacity: 0;
+  overflow-y: auto;
+  transition: $base-transition;
+  transform-origin: top;
+  transform: scaleY(0);
+}
+
+.zc-select-items-open {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+.zc-select-item {
+  width: 100%;
+  height: $input-height-default;
+  color: $primary-font-color;
+  line-height: $input-height-default;
+  padding: 0 0.4em;
+  cursor: pointer;
+  transition: $base-transition;
+  &:hover {
+    background-color: $primary-color-light-lighter;
+    color: $primary-color;
+  }
+}
+
+.zc-select-item-active {
+  background-color: $primary-gary-color;
+  font-weight: bold;
+  &:hover {
+    background-color: $primary-gary-color;
+    color: $primary-font-color;
+  }
+}

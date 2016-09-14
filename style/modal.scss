@@ -1,0 +1,68 @@
+@import "./variables";
+
+.zc-modal {
+  background: rgba(58, 63, 65, 0.4);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  z-index: 999;
+  overflow: auto;
+}
+
+%zc-dialog-base {
+  width: 400px;
+  margin: 100px auto;
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 16px;
+  box-shadow: $base-box-shadow;
+  transition: $base-transition;
+}
+
+.zc-dialog {
+  @extend %zc-dialog-base;
+
+  .zc-dialog-title {
+    text-align: center;
+    color: $primary-font-color;
+    font-size: $mid-font-size;
+    font-weight: bold;
+  }
+
+  .zc-dialog-content {
+    text-align: center;
+    color: $primary-font-color;
+  }
+
+  .zc-dialog-footer {
+    text-align: center;
+  }
+}
+
+.zc-dialog-reverse {
+  @extend %zc-dialog-base;
+  background-color: $primary-color;
+
+  .zc-dialog-title {
+    text-align: center;
+    color: #fff;
+    font-size: $mid-font-size;
+    font-weight: bold;
+  }
+
+  .zc-dialog-content {
+    text-align: center;
+    color: #fff;
+  }
+
+  .zc-dialog-footer {
+    text-align: center;
+  }
+}
+
+.zc-dialog-footer-custom {
+  text-align: right;
+}

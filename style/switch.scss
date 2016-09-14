@@ -1,0 +1,52 @@
+@import "./variables";
+
+.zc-switch {
+  vertical-align: middle;
+  display: inline-block;
+  height: 28px;
+}
+
+.zc-switch-inner {
+  width: 48px;
+  height: 18px;
+  margin: 5px 0;
+  border-radius: $input-height-default;
+  background-color: $darker-gary-color;
+  position: relative;
+  transition: $base-transition;
+}
+
+.zc-switch-button {
+  width: 24px;
+  height: 24px;
+  top: -3px;
+  left: 0;
+  border-radius: 12px;
+  background-color: #fff;
+  position: absolute;
+  box-shadow: $base-box-shadow;
+  cursor: pointer;
+  transition: $base-transition;
+}
+
+.zc-switch-active {
+  .zc-switch-inner {
+    background-color: $primary-color;
+  }
+
+  .zc-switch-button {
+    left: 24px;
+  }
+}
+
+.zc-switch-disabled {
+  .zc-switch-inner {
+    background-color: $darker-gary-color;
+  }
+
+  .zc-switch-button {
+    border: 1px solid $border-gary-color;
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+}

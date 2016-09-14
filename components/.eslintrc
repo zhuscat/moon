@@ -1,0 +1,11 @@
+{
+    "extends": "airbnb",
+    "rules": {
+      "jsx-a11y/label-has-for": 0
+    },
+    "globals": {
+      "describe": true,
+      "it": true,
+      "document": true
+    },
+}

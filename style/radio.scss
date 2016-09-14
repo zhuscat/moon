@@ -1,0 +1,98 @@
+@import "./variables.scss";
+
+.zc-radio-wrapper {
+  font-size: $base-font-size;
+  line-height: $line-height-computed;
+  color: $primary-font-color;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.zc-radio {
+  line-height: 1;
+  position: relative;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.zc-radio-input {
+  position: absolute;
+  opacity: 0;
+  left: 0;
+  top: 0;
+  cursor: pointer;
+}
+
+.zc-radio-input-disabled {
+  cursor: not-allowed;
+}
+
+.zc-radio+span {
+  margin-left: 8px;
+  margin-right: 16px;
+}
+
+.zc-radio-inner {
+  border-radius: 7px;
+  width: 14px;
+  height: 14px;
+  line-height: 1;
+  border: 1px solid $border-gary-color;
+  background-color: #fff;
+  display: inline-block;
+  position: relative;
+  transition: $base-transition;
+
+  &::after {
+    transform: scale(0);
+    content: "";
+    border-radius: 3px;
+    top: 3px;
+    left: 3px;
+    width: 6px;
+    height: 6px;
+    display: table;
+    position: absolute;
+    transition: $base-transition;
+  }
+
+  &:hover {
+    border-color: $sup-font-color;
+  }
+}
+
+.zc-radio-inner-checked {
+  position: relative;
+
+  &::after {
+    transform: scale(1);
+    content: "";
+    border-radius: 3px;
+    top: 3px;
+    left: 3px;
+    width: 6px;
+    height: 6px;
+    background-color: $primary-color;
+    display: table;
+    position: absolute;
+  }
+}
+
+.zc-radio-inner-checked.zc-radio-inner-disabled {
+  background-color: $primary-gary-color;
+  cursor: not-allowed;
+  &::after {
+    background-color: $disabled-font-color;
+  }
+  &:hover {
+    border-color: $border-gary-color;
+  }
+}
+
+.zc-radio-inner.zc-radio-inner-disabled {
+  background-color: $primary-gary-color;
+  cursor: not-allowed;
+  &:hover {
+    border-color: $border-gary-color;
+  }
+}

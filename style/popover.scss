@@ -1,0 +1,17 @@
+@import "./variables.scss";
+
+.zc-popover {
+  min-width: 180px;
+  min-height: 1px;
+  border-radius: $border-radius-default;
+  box-shadow: $base-box-shadow;
+  background-color: #fff;
+  padding: 8px 0;
+  opacity: 0;
+  position: absolute;
+  transition: $base-transition;
+}
+
+.zc-popover-show {
+  opacity: 1;
+}
