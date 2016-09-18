@@ -1,5 +1,6 @@
 /**
  * An abstract component for animation.
+ * Inspired by react/src/addons/transitions and react-component/animate.
  *
  */
 
@@ -8,6 +9,11 @@ import { toArrayChildren, findChildByKey, mergeChildren } from '../utils/Childre
 
 const propTypes = {
   children: PropTypes.any,
+  childFactory: PropTypes.func,
+};
+
+const defaultProps = {
+  childFactory: c => c,
 };
 
 export default class Animator extends Component {
@@ -112,7 +118,10 @@ export default class Animator extends Component {
       if (!child.key) {
         throw new Error('child in animator must have a key.');
       }
-      return React.cloneElement(child, { ref: child.key });
+      return React.cloneElement(
+        this.props.childFactory(child),
+        { ref: child.key, key: child.key }
+      );
     });
     return (
       <div>
@@ -123,3 +132,4 @@ export default class Animator extends Component {
 }
 
 Animator.propTypes = propTypes;
+Animator.defaultProps = defaultProps;

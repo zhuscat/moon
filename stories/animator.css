@@ -1,0 +1,24 @@
+.div {
+  background-color: red;
+  transition: all 1s;
+}
+
+.div-on-enter {
+  background-color: red;
+  opacity: 0;
+}
+
+.div-enter-active {
+  background-color: red;
+  opacity: 1;
+}
+
+.div-on-leave {
+  background-color: red;
+  opacity: 1;
+}
+
+.div-leave-active {
+  background-color: red;
+  opacity: 0;
+}

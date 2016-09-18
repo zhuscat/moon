@@ -16,7 +16,8 @@ module.exports = {
         loaders: ['style', 'css', 'sass'],
         include: [
           path.resolve(__dirname, '../components'),
-          path.resolve(__dirname, '../style')
+          path.resolve(__dirname, '../style'),
+          path.resolve(__dirname, '../stories')
         ]
       },
       {
