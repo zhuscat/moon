@@ -31,12 +31,13 @@ function getNotificationInstance() {
 function notify({
   content = '',
   type = 'info',
+  duration = 1000,
 }) {
   const notification = getNotificationInstance();
-  console.log(notification);
   notification.notify({
     content,
     type,
+    duration,
   });
 }
 

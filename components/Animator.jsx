@@ -29,7 +29,7 @@ export default class Animator extends Component {
 
   componentWillReceiveProps(nextProps) {
     const nextChildren = toArrayChildren(nextProps.children);
-    const prevChildren = this.state.children;
+    const prevChildren = this.state.children.concat();
     this.setState({
       children: mergeChildren(prevChildren, nextChildren),
     });
@@ -51,13 +51,15 @@ export default class Animator extends Component {
 
   componentDidUpdate() {
     // 执行动画
-    this.keysToEnter.forEach(key => {
+    const keysToEnter = this.keysToEnter;
+    this.keysToEnter = [];
+    keysToEnter.forEach(key => {
       this.performEnter(key);
     });
-    this.keysToLeave.forEach(key => {
+    const keysToLeave = this.keysToLeave;
+    keysToLeave.forEach(key => {
       this.performLeave(key);
     });
-    this.keysToEnter = [];
     this.keysToLeave = [];
   }
 
@@ -103,7 +105,7 @@ export default class Animator extends Component {
         }
       });
       if (index !== -1) {
-        newChildren.slice(index, 1);
+        newChildren.splice(index, 1);
       }
       return { children: newChildren };
     });

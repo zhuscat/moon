@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import classNames from 'classnames'
 import types from '../../utils/types';
 import { noop } from '../../utils/default';
 import '../../style/message.scss';
@@ -16,7 +17,7 @@ const propTypes = {
 };
 
 const defaultProps = {
-  duration: 1,
+  duration: 1000,
   autoClose: true,
   onClose: noop,
   content: '',
@@ -30,7 +31,7 @@ export default class Message extends Component {
 
   componentDidMount() {
     if (this.props.autoClose) {
-      this.closeTimeoutId = setTimeout(this.close, this.props.duration * 1000);
+      this.closeTimeoutId = setTimeout(this.close, this.props.duration);
     }
   }
 
@@ -47,6 +48,9 @@ export default class Message extends Component {
   }
 
   render() {
+    // const className = classNames({
+    //   'zc-message': true,
+    // })
     return (
       <div className="zc-message">
         {this.props.content}

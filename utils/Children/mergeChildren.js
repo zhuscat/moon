@@ -12,16 +12,15 @@ export default function mergeChildren(prev, next) {
         pendingChildren = [];
       }
     } else {
-      pendingChildren = pendingChildren.push(child);
+      pendingChildren.push(child);
     }
   });
-
   next.forEach(child => {
     if (child && {}.hasOwnProperty.call(nextChildrenPending, child.key)) {
       res = res.concat(nextChildrenPending[child.key]);
     }
     res.push(child);
   });
-  res.concat(pendingChildren);
+  res = res.concat(pendingChildren);
   return res;
 }

@@ -17,6 +17,7 @@ export default class CSSAnimator extends Component {
     super(props);
     this.wrapChild = this.wrapChild.bind(this);
   }
+
   wrapChild(child) {
     return (
       <CSSAnimatorChild

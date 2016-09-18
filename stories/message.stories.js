@@ -12,7 +12,7 @@ class MessageExample1 extends React.Component {
   }
 
   onButtonClick() {
-    notify({content: '提醒消息'});
+    notify({content: <span><i className="zmdi zmdi-info"></i>提醒消息</span>, duration: 2000});
   }
 
   render() {

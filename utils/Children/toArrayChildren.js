@@ -5,6 +5,5 @@ export default function toArrayChildren(children) {
   React.Children.forEach(children, child => {
     res.push(child);
   });
-  console.log(res);
   return res;
 }

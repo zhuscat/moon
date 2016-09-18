@@ -6,12 +6,38 @@
   box-shadow: $base-box-shadow;
   display: inline-block;
   position: fixed;
+  top: 16px;
   left: 50%;
   transform: translateX(-50%);
   padding: 8px 24px;
   border-radius: 18px;
+  transition: $base-transition;
 
   i {
     padding-right: 8px;
   }
+}
+
+.zc-message-enter {
+  opacity: 0;
+  transform: translateX(-50%);
+  top: -16px;
+}
+
+.zc-message-enter-active {
+  opacity: 1;
+  transform: translateX(-50%);
+  top: 16px;;
+}
+
+.zc-message-leave {
+  opacity: 1;
+  transform: translateX(-50%);
+  top: 16px;
+}
+
+.zc-message-leave-active {
+  opacity: 0;
+  transform: translateX(-50%);
+  top: -16px;
 }

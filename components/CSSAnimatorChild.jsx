@@ -21,6 +21,16 @@ const defaultProps = {
 };
 
 export default class CSSAnimatorChild extends Component {
+
+  constructor(props) {
+    super(props);
+    this.componentWillEnter = this.componentWillEnter.bind(this);
+    this.componentDidEnter = this.componentDidEnter.bind(this);
+    this.componentWillLeave = this.componentWillLeave.bind(this);
+    this.componentDidLeave = this.componentDidLeave.bind(this);
+    this.triggerAnimation = this.triggerAnimation.bind(this);
+  }
+
   componentWillEnter(callback) {
     const node = ReactDOM.findDOMNode(this); // eslint-disable-line
     addClass(node, this.props.onEnter);

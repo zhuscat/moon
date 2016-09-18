@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import CSSAnimator from '../CSSAnimator';
 import Message from './Message';
 import getId from '../../utils/id';
 
@@ -35,9 +36,16 @@ export default class Notification extends Component {
       );
     });
     return (
-      <div>
+      <CSSAnimator
+        onEnter="zc-message-enter"
+        enterActive="zc-message-enter-active"
+        onLeave="zc-message-leave"
+        leaveActive="zc-message-leave-active"
+        enterDuration={300}
+        leaveDuration={300}
+      >
         {renderNodes}
-      </div>
+      </CSSAnimator>
     );
   }
 }
