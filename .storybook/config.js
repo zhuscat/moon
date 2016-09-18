@@ -8,6 +8,8 @@ function loadStories() {
   require('../stories/datepicker.stories.js')
   require('../stories/menu.stories.js');
   require('../stories/popover.stories.js');
+  require('../stories/message.stories.js');
+  require('../stories/animator.stories.js');
 }
 
 configure(loadStories, module);

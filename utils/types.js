@@ -17,4 +17,17 @@ function getOrigins() {
 
 const origin = PropTypes.oneOf(getOrigins());
 
-export { origin, getOrigins }; // eslint-disable-line import/prefer-default-export
+const message = PropTypes.oneOf(['info', 'success', 'warn', 'error']);
+
+const types = {
+  origin,
+  message,
+};
+
+export {
+  origin,
+  getOrigins,
+  message,
+}; // eslint-disable-line import/prefer-default-export
+
+export default types;

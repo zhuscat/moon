@@ -1,0 +1,17 @@
+@import "./variables";
+
+.zc-message {
+  font-size: 14px;
+  color: $primary-font-color;
+  box-shadow: $base-box-shadow;
+  display: inline-block;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 24px;
+  border-radius: 18px;
+
+  i {
+    padding-right: 8px;
+  }
+}

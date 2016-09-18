@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PopoverAnimator from './PopoverAnimator';
 import RenderToLayer from '../RenderToLayer';
 import clickOutside from '../highorder/ClickOutside';
-import * as types from '../../utils/propTypes';
+import * as types from '../../utils/types';
 import '../../style/popover.scss';
 
 const propTypes = {
