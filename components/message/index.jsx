@@ -41,4 +41,36 @@ function notify({
   });
 }
 
-export { notify };
+function info(content = '', duration = 1000) {
+  notify({
+    content,
+    type: 'info',
+    duration,
+  });
+}
+
+function success(content = '', duration = 1000) {
+  notify({
+    content,
+    type: 'success',
+    duration,
+  });
+}
+
+function warn(content = '', duration = 1000) {
+  notify({
+    content,
+    type: 'warn',
+    duration,
+  });
+}
+
+function error(content = '', duration = 1000) {
+  notify({
+    content,
+    type: 'error',
+    duration,
+  });
+}
+
+export { notify, info, success, warn, error };

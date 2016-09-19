@@ -1,8 +1,25 @@
 @import "./variables";
 
+.message-type-icon-info {
+  color: $primary-color;
+}
+
+.message-type-icon-success {
+  color: $success-color;
+}
+
+.message-type-icon-warn {
+  color: $warning-color;
+}
+
+.message-type-icon-error {
+  color: $error-color;
+}
+
 .zc-message {
   font-size: 14px;
   color: $primary-font-color;
+  background-color: #fff;
   box-shadow: $base-box-shadow;
   display: inline-block;
   position: fixed;
@@ -10,7 +27,7 @@
   left: 50%;
   transform: translateX(-50%);
   padding: 8px 24px;
-  border-radius: 18px;
+  border-radius: 1000px;
   transition: $base-transition;
 
   i {

@@ -10,6 +10,7 @@ function loadStories() {
   require('../stories/popover.stories.js');
   require('../stories/message.stories.js');
   require('../stories/animator.stories.js');
+  require('../stories/stepper.stories.js')
 }
 
 configure(loadStories, module);

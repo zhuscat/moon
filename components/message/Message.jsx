@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import classNames from 'classnames'
 import types from '../../utils/types';
 import { noop } from '../../utils/default';
 import '../../style/message.scss';
@@ -21,6 +20,7 @@ const defaultProps = {
   autoClose: true,
   onClose: noop,
   content: '',
+  type: 'info',
 };
 
 export default class Message extends Component {
@@ -47,12 +47,31 @@ export default class Message extends Component {
     this.props.onClose();
   }
 
+  typeIcon(type) {
+    let iconClassName;
+    switch (type) {
+      case 'info':
+        iconClassName = 'zmdi zmdi-info message-type-icon-info';
+        break;
+      case 'success':
+        iconClassName = 'zmdi zmdi-check-circle message-type-icon-success';
+        break;
+      case 'warn':
+        iconClassName = 'zmdi zmdi-alert-triangle message-type-icon-warn';
+        break;
+      case 'error':
+        iconClassName = 'zmdi zmdi-alert-triangle message-type-icon-error';
+        break;
+      default:
+        return null;
+    }
+    return <i className={iconClassName} />;
+  }
+
   render() {
-    // const className = classNames({
-    //   'zc-message': true,
-    // })
     return (
       <div className="zc-message">
+        {this.typeIcon(this.props.type)}
         {this.props.content}
       </div>
     );
