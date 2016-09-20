@@ -270,7 +270,8 @@ export default class SubMenu extends clickOutside(Component) {
   render() {
     const { children, title } = this.props;
     const subMenuItemClassName = classNames({
-      'zc-sub-menu-item-default': true,
+      'zc-sub-menu-item-default': this.props.type === 'horizontal',
+      'zc-sub-menu-item-vertical': this.props.type === 'vertical',
       'zc-sub-menu-item-default-active': this.isChildrenSelected(),
       'zc-sub-menu-item-default-disabled': this.props.disabled,
     });

@@ -1,9 +1,9 @@
 import expect from 'expect';
-import * as propTypes from '../utils/propTypes';
+import { getOrigins } from '../utils/types';
 
 describe('propTypes', function() {
   it('getOrigins', function() {
-    const test = propTypes.getOrigins();
+    const test = getOrigins();
     const res = [
       ['left', 'top'],
       ['left', 'bottom'],

@@ -20,6 +20,7 @@ const propTypes = {
   // TODO: defaultSelectFirst 为实现
   defaultSelectedKeys: PropTypes.array,
   defaultOpenKeys: PropTypes.array,
+  type: PropTypes.string,
 };
 
 const defaultProps = {
@@ -33,6 +34,7 @@ const defaultProps = {
   onDeselect: noop,
   defaultOpenKeys: [],
   defaultSelectedKeys: [],
+  type: 'horizontal',
 };
 
 export default class Menu extends Component {
@@ -138,7 +140,7 @@ export default class Menu extends Component {
     return React.cloneElement(item, {
       selectedKeys: this.state.selectedKeys,
       onMenuItemClick: this.handleClick,
-      type: 'horizontal',
+      type: this.props.type,
       openKeys: this.state.openKeys,
       eventKey: item.key,
       onItemHover: this.onItemHover,
@@ -152,9 +154,15 @@ export default class Menu extends Component {
   }
 
   render() {
-    const { children } = this.props;
+    const { children, type } = this.props;
+    let className;
+    if (type === 'horizontal') {
+      className = 'zc-menu-default';
+    } else if (type === 'vertical') {
+      className = 'zc-menu-vertical';
+    }
     return (
-      <div className="zc-menu-default">
+      <div className={className}>
         {React.Children.map(children, this.renderMenuItem)}
       </div>
     );

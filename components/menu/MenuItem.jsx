@@ -11,6 +11,7 @@ const propTypes = {
   onDeselect: PropTypes.func,
   multiSelectable: PropTypes.bool,
   disabled: PropTypes.bool,
+  type: PropTypes.string,
 };
 
 const defaultProps = {
@@ -20,6 +21,7 @@ const defaultProps = {
   onMenuItemClick: noop,
   multiSelectable: false,
   disabled: false,
+  type: 'horizontal',
 };
 
 export default class MenuItem extends Component {
@@ -60,8 +62,9 @@ export default class MenuItem extends Component {
 
   render() {
     const className = classNames({
-      'zc-menu-item-default': true,
-      'zc-menu-item-default-active': this.isSelected(),
+      'zc-menu-item-default': this.props.type === 'horizontal',
+      'zc-menu-item-vertical': this.props.type === 'vertical',
+      'zc-menu-item-active': this.isSelected(),
       'zc-menu-item-default-disabled': this.props.disabled,
     });
     return (

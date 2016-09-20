@@ -21,17 +21,37 @@
   border-bottom: 1px solid #f1f1f1;
 }
 
-.zc-menu-item-default {
-  @extend %zc-menu-item-base;
+.zc-menu-vertical {
+  background-color: #fff;
 }
 
-.zc-menu-item-default-active, .zc-menu-item-default:hover {
-  color: $primary-color;
-  border-bottom: 2px solid $primary-color;
+.zc-menu-item-default {
+  @extend %zc-menu-item-base;
+  &.zc-menu-item-active, &:hover {
+    color: $primary-color;
+    border-bottom: 2px solid $primary-color;
+  }
+}
+
+.zc-menu-item-vertical {
+  @extend %zc-menu-item-base;
+  width: 100px;
+  display: block;
+  &.zc-menu-item-active, &:hover {
+    color: $primary-color;
+    background-color: $primary-color-light-lighter;
+  }
 }
 
 .zc-sub-menu-item-default {
   @extend %zc-menu-item-base;
+  position: relative;
+}
+
+.zc-sub-menu-item-vertical {
+  @extend %zc-menu-item-base;
+  width: 100px;
+  display: block;
   position: relative;
 }
 
@@ -113,36 +133,6 @@
     transform: scaleY(1);
   }
 
-  .zc-menu-item-default, .zc-sub-menu-item-default {
-    width: 100%;
-    color: $primary-font-color;
-    padding: 0;
-    border-bottom: none;
-  }
-
-  .zc-menu-item-default:hover, .zc-sub-menu-item-default:hover {
-    background-color: $primary-color-light-lighter;
-    color: $primary-color;
-    border-bottom: none;
-  }
-
-  .zc-menu-item-default-active, .zc-sub-menu-item-default-active {
-    background-color: #fff;
-    color: $primary-color;
-  }
-}
-
-
-
-
-
-
-
-
-
-
-
-.zc-popover {
   .zc-menu-item-default, .zc-sub-menu-item-default {
     width: 100%;
     color: $primary-font-color;
