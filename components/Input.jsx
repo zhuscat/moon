@@ -1,37 +1,45 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
+import { noop } from '../utils/default';
 import { register } from './highorder/FormItem';
 
 const propTypes = {
-  readOnly: PropTypes.bool.isRequired,
+  readOnly: PropTypes.bool,
+  type: PropTypes.string,
+  defaultValue: PropTypes.any,
   value: PropTypes.any,
-  onChange: PropTypes.func.isRequired,
-  trigger: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  placeholder: PropTypes.string.isRequired,
+  trigger: PropTypes.string,
+  placeholder: PropTypes.string,
+  onChange: PropTypes.func,
+  onTrigger: PropTypes.func,
 };
 
 const defaultProps = {
   readOnly: false,
-  trigger: 'blur',
   type: 'text',
-  value: '',
+  defaultValue: '',
+  trigger: 'blur',
   placeholder: '',
+  onChange: noop,
+  onTrigger: noop,
 };
 
 class Input extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      value: props.value,
-    };
+    let value = props.defaultValue;
+    if ('value' in props) {
+      value = props.value;
+    }
+    this.state = { value };
     this.handleChange = this.handleChange.bind(this);
     this.handleTrigger = this.handleTrigger.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('input will receive props');
-    this.setState({ value: nextProps.value });
+    if ('value' in nextProps) {
+      this.setState({ value: nextProps.value });
+    }
   }
 
   handleChange(event) {
@@ -46,11 +54,19 @@ class Input extends Component {
     const value = event.target.value;
 
     if (regs[type] && !regs[type].test(value)) {
-      this.setState({ value: this.state.value });
+      if ('value' in this.props) {
+        this.props.onChange(this.state.value);
+      } else {
+        this.setState({ value: this.state.value });
+      }
       return;
     }
 
-    this.setState({ value });
+    if ('value' in this.props) {
+      this.props.onChange(this.state.value);
+    } else {
+      this.setState({ value });
+    }
 
     if (trigger === 'change') {
       this.handleTrigger(event);
@@ -59,7 +75,7 @@ class Input extends Component {
 
   handleTrigger(event) {
     const value = event.target.value;
-    this.props.onChange(value, event);
+    this.props.onTrigger(value, event);
   }
 
   render() {
