@@ -14,6 +14,7 @@ function loadStories() {
   require('../stories/pagination.stories.js');
   require('../stories/input-in-lab.stories.js');
   require('../stories/form-in-lab.stories.js');
+  require('../stories/checkbox.stories.js');
 }
 
 configure(loadStories, module);

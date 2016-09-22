@@ -14,14 +14,40 @@ function createForm(options = {}) {
         this.handleChange = this.handleChange.bind(this);
         this.getFieldMeta = this.getFieldMeta.bind(this);
         this.getActionCache = this.getActionCache.bind(this);
+        this.getFieldErrors = this.getFieldErrors.bind(this);
+        this.getFieldsNameValue = this.getFieldsNameValue.bind(this);
         this.fieldsMeta = {};
         this.fields = {};
         this.actionCache = {};
+        this.state = { isSubmitting: false };
+      }
+
+      getValidFieldsName() {
+        const { fieldsMeta } = this;
+        return Object.keys(fieldsMeta).filter(key => !fieldsMeta[key].hidden);
+      }
+
+      getFieldsNameValue() {
+        const fieldsName = this.getValidFieldsName();
+        const nameValueObj = {};
+        fieldsName.forEach(name => {
+          nameValueObj[name] = this.getField(name).value;
+        });
+        return nameValueObj;
+      }
+
+      getField(name) {
+        return Object.assign({}, { name }, this.fields[name]);
       }
 
       setFields(fields) {
         const newFields = Object.assign({}, this.fields, fields);
         this.fields = newFields;
+      }
+
+      getFieldErrors(name) {
+        const field = this.getField(name);
+        return field.errors || [];
       }
 
       getFieldMeta(name) {
@@ -67,6 +93,7 @@ function createForm(options = {}) {
             value,
           },
         });
+        this.forceUpdate();
       }
 
       handleValidateChange(name, eventType, event) {
@@ -96,17 +123,18 @@ function createForm(options = {}) {
           }
         });
         field.errors = errors;
-        console.log(errors);
+        field.value = value;
         this.setFields({
-          [name]: {
-            value,
-          },
+          [name]: field,
         });
+        this.forceUpdate();
       }
 
       render() {
         const formProps = {
           getFieldProps: this.getFieldProps,
+          getFieldErrors: this.getFieldErrors,
+          getFieldsNameValue: this.getFieldsNameValue,
         };
         return <WrappedComponent form={formProps} />;
       }
