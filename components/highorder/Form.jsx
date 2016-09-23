@@ -1,4 +1,9 @@
 import React, { Component, PropTypes } from 'react';
+import formValidate from './FormValidate';
+import mustArray from '../../utils/array/mustArray';
+
+const DEFAUTL_VALUE_PROP_NAME = 'value';
+const DEFAULT_VALIDATE_TRIGGER = 'onChange';
 
 function getValueFromEvent(event) {
   if (!event || !event.target) {
@@ -49,7 +54,7 @@ function createForm(options = {}) {
         const fieldsName = this.getValidFieldsName();
         const nameValueObj = {};
         fieldsName.forEach(name => {
-          nameValueObj[name] = this.getField(name).value;
+          nameValueObj[name] = this.getFieldValue(name).value;
         });
         return nameValueObj;
       }
@@ -73,19 +78,23 @@ function createForm(options = {}) {
       }
 
       getFieldProps(name, options = {}) {
-        const {
+        let {
           validates,
-          // rules,
-          // trigger,
+        } = options;
+        const {
+          valuePropName,
           initialValue,
         } = options;
+        validates = mustArray(validates);
+        console.log(name, validates);
         const meta = {};
+        meta.valuePropName = valuePropName || DEFAUTL_VALUE_PROP_NAME;
         meta.validates = validates;
         meta.initialValue = initialValue;
         this.fieldsMeta[name] = meta;
         let inputProps = {};
         validates.forEach(vali => {
-          const trigger = vali.trigger || ['onChange'];
+          const trigger = vali.trigger || [DEFAULT_VALIDATE_TRIGGER];
           trigger.forEach(eventType => {
             inputProps[eventType] = this.getActionCache(name, eventType, this.handleValidateChange);
           });
@@ -93,7 +102,6 @@ function createForm(options = {}) {
         if (!('onChange' in inputProps)) {
           inputProps.onChange = this.getActionCache(name, 'onChange', this.handleChange);
         }
-        console.log(this.getFieldValue(name));
         inputProps = Object.assign({}, inputProps, this.getFieldValue(name));
         return Object.assign({}, { name }, inputProps);
       }
@@ -118,30 +126,30 @@ function createForm(options = {}) {
       }
 
       handleValidateChange(name, eventType, event) {
-        console.log('handleValidateChange');
         const fieldMeta = this.getFieldMeta(name);
         const value = getValueFromEvent(event);
         // need to improve
         const field = this.fields[name] = this.fields[name] || {};
-        const errors = [];
+        let errors = [];
         const validates = fieldMeta.validates;
         validates.forEach(vali => {
           if (vali.trigger.includes(eventType)) {
             // start validating
             // get rules
             const rules = vali.rules;
-            rules.forEach(rule => {
-              if ('min' in rule) {
-                if (value.length < rule.min) {
-                  errors.push('太小了');
-                }
-              }
-              if ('max' in rule) {
-                if (value.length > rule.max) {
-                  errors.push('太大了');
-                }
-              }
-            });
+            errors = errors.concat(formValidate(value, rules));
+            // rules.forEach(rule => {
+            //   if ('min' in rule) {
+            //     if (value.length < rule.min) {
+            //       errors.push('太小了');
+            //     }
+            //   }
+            //   if ('max' in rule) {
+            //     if (value.length > rule.max) {
+            //       errors.push('太大了');
+            //     }
+            //   }
+            // });
           }
         });
         field.errors = errors;

@@ -74,7 +74,6 @@ export default class CheckboxGroup extends Component {
       if (idx !== -1) {
         const newValue = [
           ...this.state.value.slice(0, idx),
-          this.state.value[idx] + 1,
           ...this.state.value.slice(idx + 1),
         ];
         if ('value' in this.props) {

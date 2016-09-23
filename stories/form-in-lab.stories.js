@@ -23,11 +23,12 @@ class FormExample1 extends React.Component {
         >
           <Input
             {...this.props.form.getFieldProps('email', {
+              initialValue: 'please enter',
               validates: [
                 {
                   rules: [{
                     min: 5,
-                    max: 10,
+                    max: 20,
                   }],
                   trigger: ['onChange'],
                 },
@@ -47,8 +48,8 @@ class FormExample1 extends React.Component {
               validates: [
                 {
                   rules: [{
-                    min: 5,
-                    maxi: 10,
+                    min: 1,
+                    max: 2,
                   }],
                   trigger: ['onChange'],
                 },
@@ -66,15 +67,6 @@ class FormExample1 extends React.Component {
           <Radio.RadioGroup
             {...this.props.form.getFieldProps('radiogroup', {
               initialValue: 'movie',
-              validates: [
-                {
-                  rules: [{
-                    min: 5,
-                    maxi: 10,
-                  }],
-                  trigger: ['onChange'],
-                },
-              ],
             })}
             options={['movie', 'book', 'music']}
           />
@@ -88,15 +80,6 @@ class FormExample1 extends React.Component {
           <Select
             {...this.props.form.getFieldProps('select', {
               initialValue: 'movie',
-              validates: [
-                {
-                  rules: [{
-                    min: 5,
-                    maxi: 10,
-                  }],
-                  trigger: ['onChange'],
-                },
-              ],
             })}
             options={['movie', 'book', 'music']}
           />
@@ -110,15 +93,6 @@ class FormExample1 extends React.Component {
           <Switch
             {...this.props.form.getFieldProps('switch', {
               initialValue: false,
-              validates: [
-                {
-                  rules: [{
-                    min: 5,
-                    maxi: 10,
-                  }],
-                  trigger: ['onChange'],
-                },
-              ],
             })}
           />
         </Form.FormItem>
@@ -135,7 +109,7 @@ class FormExample1 extends React.Component {
                 {
                   rules: [{
                     min: 5,
-                    maxi: 10,
+                    max: 10,
                   }],
                   trigger: ['onChange'],
                 },
