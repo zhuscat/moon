@@ -1,6 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 
 function getValueFromEvent(event) {
+  if (!event || !event.target) {
+    return event;
+  }
   return event.target.value;
 }
 
@@ -25,6 +28,21 @@ function createForm(options = {}) {
       getValidFieldsName() {
         const { fieldsMeta } = this;
         return Object.keys(fieldsMeta).filter(key => !fieldsMeta[key].hidden);
+      }
+
+      getFieldValue(name) {
+        const meta = this.getFieldMeta(name);
+        const field = this.getField(name);
+        let fieldValue;
+        if ('value' in field) {
+          fieldValue = field.value;
+        }
+        if (fieldValue === null || fieldValue === undefined) {
+          fieldValue = meta.initialValue;
+        }
+        return {
+          value: fieldValue,
+        };
       }
 
       getFieldsNameValue() {
@@ -59,12 +77,13 @@ function createForm(options = {}) {
           validates,
           // rules,
           // trigger,
-          // initialValue,
+          initialValue,
         } = options;
         const meta = {};
         meta.validates = validates;
+        meta.initialValue = initialValue;
         this.fieldsMeta[name] = meta;
-        const inputProps = {};
+        let inputProps = {};
         validates.forEach(vali => {
           const trigger = vali.trigger || ['onChange'];
           trigger.forEach(eventType => {
@@ -74,6 +93,8 @@ function createForm(options = {}) {
         if (!('onChange' in inputProps)) {
           inputProps.onChange = this.getActionCache(name, 'onChange', this.handleChange);
         }
+        console.log(this.getFieldValue(name));
+        inputProps = Object.assign({}, inputProps, this.getFieldValue(name));
         return Object.assign({}, { name }, inputProps);
       }
 
@@ -97,6 +118,7 @@ function createForm(options = {}) {
       }
 
       handleValidateChange(name, eventType, event) {
+        console.log('handleValidateChange');
         const fieldMeta = this.getFieldMeta(name);
         const value = getValueFromEvent(event);
         // need to improve
