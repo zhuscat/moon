@@ -4,6 +4,7 @@ import createForm from '../components/highorder/Form';
 import Form from '../components/form-in-lab';
 import Input from '../components/input-in-lab';
 import Checkbox from '../components/checkbox-in-lab';
+import Radio from '../components/radio-in-lab';
 import '../style/base.scss';
 import '../style/icon/css/material-design-iconic-font.min.css';
 
@@ -40,6 +41,28 @@ class FormExample1 extends React.Component {
           <Checkbox.CheckboxGroup
             {...this.props.form.getFieldProps('checkboxgroup', {
               initialValue: ['movie'],
+              validates: [
+                {
+                  rules: [{
+                    min: 5,
+                    maxi: 10,
+                  }],
+                  trigger: ['onChange'],
+                },
+              ],
+            })}
+            options={['movie', 'book', 'music']}
+          />
+        </Form.FormItem>
+        <Form.FormItem
+          label="radio group"
+          labelCol={{span: 6}}
+          wrapperCol={{span: 18}}
+          form={this.props.form}
+        >
+          <Radio.RadioGroup
+            {...this.props.form.getFieldProps('radiogroup', {
+              initialValue: 'movie',
               validates: [
                 {
                   rules: [{
