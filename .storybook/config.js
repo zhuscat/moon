@@ -17,6 +17,8 @@ function loadStories() {
   require('../stories/checkbox.stories.js');
   require('../stories/radio.stories.js');
   require('../stories/select.stories.js');
+  require('../stories/switch.stories.js');
+  require('../stories/numberInput.stories.js');
 }
 
 configure(loadStories, module);

@@ -6,6 +6,8 @@ import Input from '../components/input-in-lab';
 import Checkbox from '../components/checkbox-in-lab';
 import Radio from '../components/radio-in-lab';
 import Select from '../components/select-in-lab';
+import Switch from '../components/switch-in-lab';
+import NumberInput from '../components/number-input-in-lab';
 import '../style/base.scss';
 import '../style/icon/css/material-design-iconic-font.min.css';
 
@@ -97,6 +99,48 @@ class FormExample1 extends React.Component {
               ],
             })}
             options={['movie', 'book', 'music']}
+          />
+        </Form.FormItem>
+        <Form.FormItem
+          label="select"
+          labelCol={{span: 6}}
+          wrapperCol={{span: 18}}
+          form={this.props.form}
+        >
+          <Switch
+            {...this.props.form.getFieldProps('switch', {
+              initialValue: false,
+              validates: [
+                {
+                  rules: [{
+                    min: 5,
+                    maxi: 10,
+                  }],
+                  trigger: ['onChange'],
+                },
+              ],
+            })}
+          />
+        </Form.FormItem>
+        <Form.FormItem
+          label="select"
+          labelCol={{span: 6}}
+          wrapperCol={{span: 18}}
+          form={this.props.form}
+        >
+          <NumberInput
+            {...this.props.form.getFieldProps('numberInput', {
+              initialValue: 2,
+              validates: [
+                {
+                  rules: [{
+                    min: 5,
+                    maxi: 10,
+                  }],
+                  trigger: ['onChange'],
+                },
+              ],
+            })}
           />
         </Form.FormItem>
         <button
