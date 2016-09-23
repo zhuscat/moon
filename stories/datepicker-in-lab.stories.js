@@ -42,6 +42,11 @@ storiesOf('DatePicker in Lab 实验性日期选择器', module)
       <DatePicker />
     );
   })
+  .add('ReadOnly 只读', () => {
+    return (
+      <DatePicker readOnly />
+    );
+  })
   .add('Controlled 受控', () => {
     return (
       <DatePickerExample1 />

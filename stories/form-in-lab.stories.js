@@ -8,6 +8,7 @@ import Radio from '../components/radio-in-lab';
 import Select from '../components/select-in-lab';
 import Switch from '../components/switch-in-lab';
 import NumberInput from '../components/number-input-in-lab';
+import Button from '../components/Button';
 import '../style/base.scss';
 import '../style/icon/css/material-design-iconic-font.min.css';
 
@@ -32,6 +33,78 @@ class FormExample1 extends React.Component {
                   }],
                   trigger: ['onChange'],
                 },
+              ],
+            })}
+          />
+        </Form.FormItem>
+        <Form.FormItem
+          label="password"
+          labelCol={{span: 6}}
+          wrapperCol={{span: 18}}
+          form={this.props.form}
+        >
+          <Input
+            type="password"
+            {...this.props.form.getFieldProps('password', {
+              validates: [
+                {
+                  rules: [{
+                    func: (value) => {
+                      this.props.form.validateFields(['passwordagain'])
+                      return true;
+                    }
+                  }],
+                  trigger: ['onChange'],
+                },
+                {
+                  rules: [{
+                    min: 5,
+                    max: 20,
+                  }],
+                  trigger: ['onChange'],
+                },
+              ],
+            })}
+          />
+        </Form.FormItem>
+        <Form.FormItem
+          label="password again"
+          labelCol={{span: 6}}
+          wrapperCol={{span: 18}}
+          form={this.props.form}
+        >
+          <Input
+            type="password"
+            {...this.props.form.getFieldProps('passwordagain', {
+              initialValue: 'fdfdfd',
+              validates: [
+                {
+                  rules: [{
+                    required: true,
+                  }],
+                  trigger: ['onChange'],
+                },
+                {
+                  rules: [{
+                    min: 5,
+                    max: 20,
+                  }],
+                  trigger: ['onChange'],
+                },
+                {
+                  rules: [{
+                    func: (value) => {
+                      const v = this.props.form.getFieldValue('password').value;
+                      console.log('validate value', v, value);
+                      if (v !== value) {
+                        return false;
+                      }
+                      return true;
+                    },
+                    message: '两次密码输入必须一致',
+                  }],
+                  trigger: ['onChange'],
+                }
               ],
             })}
           />
@@ -117,12 +190,13 @@ class FormExample1 extends React.Component {
             })}
           />
         </Form.FormItem>
-        <button
-          type="button"
+        <Button
           onClick={() => {
             console.log(this.props.form.getFieldsNameValue());
           }}
-        >点击提交</button>
+        >
+          点击提交
+        </Button>
       </div>
     );
   }

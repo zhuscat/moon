@@ -24,9 +24,11 @@ function createForm(options = {}) {
         this.getActionCache = this.getActionCache.bind(this);
         this.getFieldErrors = this.getFieldErrors.bind(this);
         this.getFieldsNameValue = this.getFieldsNameValue.bind(this);
+        this.getFieldValue = this.getFieldValue.bind(this);
         this.fieldsMeta = {};
         this.fields = {};
         this.actionCache = {};
+        this.validateFields = this.validateFields.bind(this);
         this.state = { isSubmitting: false };
       }
 
@@ -66,6 +68,7 @@ function createForm(options = {}) {
       setFields(fields) {
         const newFields = Object.assign({}, this.fields, fields);
         this.fields = newFields;
+        this.forceUpdate();
       }
 
       getFieldErrors(name) {
@@ -115,6 +118,22 @@ function createForm(options = {}) {
         return cache[eventType];
       }
 
+      validateFields(names) {
+        names.forEach((name) => {
+          const meta = this.getFieldMeta(name);
+          const value = this.getFieldValue(name).value;
+          let errors = [];
+          meta.validates.forEach(vali => {
+            errors = errors.concat(formValidate(value, vali.rules));
+          });
+          const field = this.getField(name);
+          field.errors = errors;
+          this.setFields({
+            [name]: field,
+          });
+        });
+      }
+
       handleChange(name, eventType, event) {
         const value = getValueFromEvent(event);
         this.setFields({
@@ -122,42 +141,24 @@ function createForm(options = {}) {
             value,
           },
         });
-        this.forceUpdate();
       }
 
       handleValidateChange(name, eventType, event) {
-        const fieldMeta = this.getFieldMeta(name);
         const value = getValueFromEvent(event);
         // need to improve
         const field = this.fields[name] = this.fields[name] || {};
-        let errors = [];
-        const validates = fieldMeta.validates;
-        validates.forEach(vali => {
-          if (vali.trigger.includes(eventType)) {
-            // start validating
-            // get rules
-            const rules = vali.rules;
-            errors = errors.concat(formValidate(value, rules));
-            // rules.forEach(rule => {
-            //   if ('min' in rule) {
-            //     if (value.length < rule.min) {
-            //       errors.push('太小了');
-            //     }
-            //   }
-            //   if ('max' in rule) {
-            //     if (value.length > rule.max) {
-            //       errors.push('太大了');
-            //     }
-            //   }
-            // });
-          }
-        });
-        field.errors = errors;
         field.value = value;
         this.setFields({
           [name]: field,
         });
-        this.forceUpdate();
+        // validates.forEach(vali => {
+        //   if (vali.trigger.includes(eventType)) {
+        //     const rules = vali.rules;
+        //     errors = errors.concat(formValidate(value, rules));
+        //   }
+        // });
+        // field.errors = errors;
+        this.validateFields([name]);
       }
 
       render() {
@@ -165,6 +166,8 @@ function createForm(options = {}) {
           getFieldProps: this.getFieldProps,
           getFieldErrors: this.getFieldErrors,
           getFieldsNameValue: this.getFieldsNameValue,
+          getFieldValue: this.getFieldValue,
+          validateFields: this.validateFields,
         };
         return <WrappedComponent form={formProps} />;
       }

@@ -19,6 +19,7 @@ class CheckboxExample2 extends React.Component {
     super(props);
     this.state = { value: [] };
   }
+
   render() {
     const options = ['movie', 'book', 'music'];
     return (
@@ -35,6 +36,11 @@ storiesOf('Checkbox in Lab 实验性选择框', module)
   .add('Basic 基本', () => {
     return (
       <Checkbox text="checkbox" />
+    );
+  })
+  .add('ReadOnly 只读', () => {
+    return (
+      <Checkbox text="readOnly" readOnly />
     );
   })
   .add('Controlled 受控', () => {

@@ -3,6 +3,7 @@ import shallowClone from '../../utils/object/shallowClone';
 import classNames from 'classnames';
 
 const propTypes = {
+  type: PropTypes.string,
   defaultValue: PropTypes.string,
   value: PropTypes.string,
   placeholder: PropTypes.string,
@@ -10,6 +11,7 @@ const propTypes = {
 };
 
 const defaultProps = {
+  type: 'text',
   defaultValue: '',
   placeholder: '',
   readOnly: false,
@@ -29,7 +31,7 @@ export default class Input extends Component { // eslint-disable-line
     return (
       <input
         className={className}
-        type="text"
+        type={this.props.type}
         {...props}
       />);
   }

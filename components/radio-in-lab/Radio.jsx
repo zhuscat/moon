@@ -36,6 +36,9 @@ export default class Radio extends Component {
   }
 
   handleChange(syntheticEvent) {
+    if (this.props.readOnly) {
+      return;
+    }
     if ('checked' in this.props) {
       this.props.onChange({
         key: this.props.value,

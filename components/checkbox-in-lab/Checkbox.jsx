@@ -15,7 +15,7 @@ const propTypes = {
 const defaultProps = {
   text: '',
   readOnly: false,
-  defaultChecked: true,
+  defaultChecked: false,
   onChange: noop,
   value: '',
 };
@@ -38,6 +38,9 @@ export default class Checkbox extends Component {
   }
 
   handleChange(syntheticEvent) {
+    if (this.props.readOnly) {
+      return;
+    }
     if ('checked' in this.props) {
       this.props.onChange({
         key: this.props.value,

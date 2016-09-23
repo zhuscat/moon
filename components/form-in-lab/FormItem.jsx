@@ -14,14 +14,26 @@ const propTypes = {
   ]),
   layout: PropTypes.oneOf(['inline', 'aligned', 'stacked']),
   children: PropTypes.any,
+  showAllErrors: PropTypes.bool,
+};
+
+const defaultProps = {
+  showAllErrors: true,
 };
 
 export default class FormItem extends Component {
 
   getErrors() {
+    const { showAllErrors } = this.props;
     const name = this.props.children.props.name;
     const errors = this.props.form.getFieldErrors(name);
-    return errors.join('');
+    if (showAllErrors) {
+      return errors.join(', ');
+    }
+    if (errors.length) {
+      return errors[0];
+    }
+    return null;
   }
 
   renderAligned() {
@@ -52,3 +64,4 @@ export default class FormItem extends Component {
 }
 
 FormItem.propTypes = propTypes;
+FormItem.defaultProps = defaultProps;

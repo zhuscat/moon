@@ -42,6 +42,11 @@ storiesOf('Radio in Lab 实验性单选框', module)
       <RadioExample1 />
     );
   })
+  .add('ReadOnly 只读', () => {
+    return (
+      <Radio readOnly text="readOnly" defaultChecked={true} />
+    )
+  })
   .add('CheckboxGroup 单选框组', () => {
     const options = ['movie', 'book', 'music'];
     return (

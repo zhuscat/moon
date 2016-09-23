@@ -24,6 +24,15 @@ storiesOf('Switch in Lab 实验性开关', module)
       <Switch />
     );
   })
+  .add('ReadOnly 只读', () => {
+    return (
+      <div>
+        <Switch readOnly />
+        <br />
+        <Switch readOnly defaultValue={true} />
+      </div>
+    )
+  })
   .add('Controlled 受控', () => {
     return (
       <SwitchExample1 />

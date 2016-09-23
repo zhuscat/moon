@@ -43,6 +43,12 @@ storiesOf('Select in Lab 实验性选择框', module)
       <Select options={options} />
     );
   })
+  .add('只读 ReadOnly', () => {
+    const options = ['movie', 'book', 'music'];
+    return (
+      <Select options={options} readOnly />
+    );
+  })
   .add('Controlled 受控', () => {
     return (
       <SelectExample1 />

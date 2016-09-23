@@ -165,9 +165,12 @@ export default class DatePicker extends Component {
   renderDateSelect() {
     const monthDaysArray = datetime.getMonthDaysArray(this.state.value);
     const currMonth = this.state.value.getMonth();
-    return monthDaysArray.map(row =>
-      <tr className="zc-calendar-body-row">
-        {row.map(col => {
+    return monthDaysArray.map((row, idx) =>
+      <tr
+        key={`zc-date-select-row-${idx}`}
+        className="zc-calendar-body-row"
+      >
+        {row.map((col, cIdx) => {
           const colClassName = classNames({
             'zc-calendar-body-col': true,
             'zc-calendar-body-column-disabled': col.getMonth() !== currMonth,
@@ -177,7 +180,10 @@ export default class DatePicker extends Component {
             'zc-calendar-date-active': datetime.sameDay(col, this.state.value),
           });
           return (
-            <td className={colClassName}>
+            <td
+              key={`zc-date-select-col-${cIdx}`}
+              className={colClassName}
+            >
               <div
                 className={dateClassName}
                 onClick={() => { this.handleChange(col); }}
@@ -204,15 +210,21 @@ export default class DatePicker extends Component {
       const rowArray = monthArray.splice(0, 4);
       monthRowArray.push(rowArray);
     }
-    return monthRowArray.map(row =>
-      <tr className="zc-calendar-body-row">
-        {row.map(col => {
+    return monthRowArray.map((row, idx) =>
+      <tr
+        key={`zc-month-select-row-${idx}`}
+        className="zc-calendar-body-row"
+      >
+        {row.map((col, cIdx) => {
           const calendarMonthClassName = classNames({
             'zc-calendar-year': true,
             'zc-calendar-year-active': month === col.value,
           });
           return (
-            <td className="zc-calendar-year-col">
+            <td
+              key={`zc-month-select-col-${cIdx}`}
+              className="zc-calendar-year-col"
+            >
               <div
                 className={calendarMonthClassName}
                 onClick={() => this.handleMonthButtonClick(col.value)}
@@ -240,16 +252,22 @@ export default class DatePicker extends Component {
       const rowArray = yearArray.splice(0, 4);
       yearRowArray.push(rowArray);
     }
-    return yearRowArray.map(row =>
-      <tr className="zc-calendar-body-row">
-        {row.map(col => {
+    return yearRowArray.map((row, idx) =>
+      <tr
+        key={`zc-year-select-row-${idx}`}
+        className="zc-calendar-body-row"
+      >
+        {row.map((col, cIdx) => {
           const year = col.value;
           const calendarYearClassName = classNames({
             'zc-calendar-year': true,
             'zc-calendar-year-active': fullYear === year,
           });
           return (
-            <td className="zc-calendar-year-col">
+            <td
+              key={`zc-year-select-col-${cIdx}`}
+              className="zc-calendar-year-col"
+            >
               <div
                 className={calendarYearClassName}
                 onClick={() => this.handleYearButtonClick(year)}
@@ -356,7 +374,7 @@ export default class DatePicker extends Component {
 
   renderCalendarContent() {
     const renderArray = [
-      <div className="zc-calendar-header">
+      <div className="zc-calendar-header" key="zc-calendar-content-header">
         <a
           className="zc-calendar-button zc-calendar-button-prev-year"
           type="button"
@@ -414,7 +432,7 @@ export default class DatePicker extends Component {
           »
         </a>
       </div>,
-      <div className="zc-calendar-body">
+      <div className="zc-calendar-body" key="zc-calendar-content-body">
         <table className="zc-calendar-table">
           <thead className="zc-calendar-head">
             <tr className="zc-calendar-head-row">
