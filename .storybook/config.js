@@ -19,6 +19,7 @@ function loadStories() {
   require('../stories/select.stories.js');
   require('../stories/switch.stories.js');
   require('../stories/numberInput.stories.js');
+  require('../stories/datepicker-in-lab.stories.js');
 }
 
 configure(loadStories, module);
