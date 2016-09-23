@@ -12,6 +12,14 @@ function loadStories() {
   require('../stories/animator.stories.js');
   require('../stories/stepper.stories.js');
   require('../stories/pagination.stories.js');
+  require('../stories/input-in-lab.stories.js');
+  require('../stories/form-in-lab.stories.js');
+  require('../stories/checkbox.stories.js');
+  require('../stories/radio.stories.js');
+  require('../stories/select.stories.js');
+  require('../stories/switch.stories.js');
+  require('../stories/numberInput.stories.js');
+  require('../stories/datepicker-in-lab.stories.js');
 }
 
 configure(loadStories, module);

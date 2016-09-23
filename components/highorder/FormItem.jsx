@@ -17,6 +17,7 @@ const COMPONENTS = {};
 
 const wrap = (WrappedComponent) => {
   const propTypes = {
+    defaultValue: PropTypes.any,
     value: PropTypes.any,
     type: PropTypes.string,
     onValidate: PropTypes.func,
@@ -35,10 +36,7 @@ const wrap = (WrappedComponent) => {
   class FormItem extends Component {
     constructor(props) {
       super(props);
-      this.state = {
-        hasError: false,
-        value: getValue(props),
-      };
+      this.state = { value: getValue(props) };
       this.handleChange = this.handleChange.bind(this);
       this.bindToForm = this.bindToForm.bind(this);
     }
@@ -178,7 +176,7 @@ const register = (WrappedComponent, types = []) => {
 
   types.forEach(type => {
     if ({}.hasOwnProperty.call(COMPONENTS, type)) {
-      console.warn(`type ${type} already exists.`);
+      console.warn(`type ${type} already exists.`); // eslint-disable-line
       return;
     }
     render = (props) => React.createElement(newComponent, props);
