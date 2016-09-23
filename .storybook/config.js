@@ -16,6 +16,7 @@ function loadStories() {
   require('../stories/form-in-lab.stories.js');
   require('../stories/checkbox.stories.js');
   require('../stories/radio.stories.js');
+  require('../stories/select.stories.js');
 }
 
 configure(loadStories, module);

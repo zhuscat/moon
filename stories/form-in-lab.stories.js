@@ -5,6 +5,7 @@ import Form from '../components/form-in-lab';
 import Input from '../components/input-in-lab';
 import Checkbox from '../components/checkbox-in-lab';
 import Radio from '../components/radio-in-lab';
+import Select from '../components/select-in-lab';
 import '../style/base.scss';
 import '../style/icon/css/material-design-iconic-font.min.css';
 
@@ -62,6 +63,28 @@ class FormExample1 extends React.Component {
         >
           <Radio.RadioGroup
             {...this.props.form.getFieldProps('radiogroup', {
+              initialValue: 'movie',
+              validates: [
+                {
+                  rules: [{
+                    min: 5,
+                    maxi: 10,
+                  }],
+                  trigger: ['onChange'],
+                },
+              ],
+            })}
+            options={['movie', 'book', 'music']}
+          />
+        </Form.FormItem>
+        <Form.FormItem
+          label="select"
+          labelCol={{span: 6}}
+          wrapperCol={{span: 18}}
+          form={this.props.form}
+        >
+          <Select
+            {...this.props.form.getFieldProps('select', {
               initialValue: 'movie',
               validates: [
                 {
