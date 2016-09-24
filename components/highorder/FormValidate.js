@@ -3,6 +3,7 @@ import isEmptyArray from '../../utils/array/isEmptyArray';
 import isEmptyString from '../../utils/string/isEmptyString';
 import isNumber from '../../utils/number/isNumber';
 import isString from '../../utils/string/isString';
+import { noop } from '../../utils/default';
 import DEFAULT_LOCALE from '../../locale/zh_CN/FormValidate';
 
 const REGEXPS = {
@@ -24,7 +25,7 @@ const REGEXPS = {
   type,
   message
 */
-export default function formValidate(value, rules = [], locale = DEFAULT_LOCALE) {
+export default function formValidate(value, rules = [], callback = noop, locale = DEFAULT_LOCALE) {
   const rs = mustArray(rules);
   const errors = [];
   rs.forEach(r => {
