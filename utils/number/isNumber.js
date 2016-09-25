@@ -1,3 +1,3 @@
-export default function isString(obj) {
-  return (Object.prototype.toString.call(obj) === '[object Number]');
+export default function isNumber(obj) {
+  return (Object.prototype.toString.call(obj) === '[object Number]') && !Number.isNaN(obj);
 }

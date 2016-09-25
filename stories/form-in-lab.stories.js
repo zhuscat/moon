@@ -13,6 +13,16 @@ import '../style/base.scss';
 import '../style/icon/css/material-design-iconic-font.min.css';
 
 class FormExample1 extends React.Component {
+  constructor(props) {
+    super(props);
+    this.passwordCheck = this.passwordCheck.bind(this);
+  }
+
+  passwordCheck(rule, value, callback, fields) {
+    this.props.form.validateFields(['passwordagain']);
+    callback('验证密码');
+  }
+
   render() {
     return (
       <div>
@@ -27,9 +37,54 @@ class FormExample1 extends React.Component {
               initialValue: 'please enter',
               validates: [
                 {
+                  rules:[
+                    {
+                      required: true,
+                    },
+                  ],
+
+                  trigger: ['onChange'],
+                },
+              ],
+            })}
+          />
+        </Form.FormItem>
+        <Form.FormItem
+          label="account"
+          labelCol={{span: 6}}
+          wrapperCol={{span: 18}}
+          form={this.props.form}
+        >
+          <Input
+            type="text"
+            {...this.props.form.getFieldProps('account', {
+              validates: [
+                {
                   rules: [{
-                    min: 5,
-                    max: 20,
+                    type: 'number',
+                    message: '必须填写数字',
+                  }],
+                  trigger: ['onChange'],
+                },
+              ],
+            })}
+          />
+        </Form.FormItem>
+        <Form.FormItem
+          label="stringstring"
+          labelCol={{span: 6}}
+          wrapperCol={{span: 18}}
+          form={this.props.form}
+        >
+          <Input
+            type="text"
+            {...this.props.form.getFieldProps('stringstring', {
+              validates: [
+                {
+                  rules: [{
+                    type: 'string',
+                    min: 1,
+                    max: 10,
                   }],
                   trigger: ['onChange'],
                 },
@@ -49,17 +104,9 @@ class FormExample1 extends React.Component {
               validates: [
                 {
                   rules: [{
-                    func: (value) => {
-                      this.props.form.validateFields(['passwordagain'])
-                      return true;
-                    }
-                  }],
-                  trigger: ['onChange'],
-                },
-                {
-                  rules: [{
-                    min: 5,
-                    max: 20,
+                    required: true,
+                    validator: this.passwordCheck,
+                    message: '必须要填写密码',
                   }],
                   trigger: ['onChange'],
                 },
@@ -80,31 +127,13 @@ class FormExample1 extends React.Component {
               validates: [
                 {
                   rules: [{
-                    required: true,
-                  }],
-                  trigger: ['onChange'],
-                },
-                {
-                  rules: [{
-                    min: 5,
-                    max: 20,
-                  }],
-                  trigger: ['onChange'],
-                },
-                {
-                  rules: [{
-                    func: (value) => {
-                      const v = this.props.form.getFieldValue('password').value;
-                      console.log('validate value', v, value);
-                      if (v !== value) {
-                        return false;
-                      }
-                      return true;
+                    validator: function(rule, value, callback, fields) {
+                      callback('email err');
                     },
-                    message: '两次密码输入必须一致',
+                    message: '错误',
                   }],
                   trigger: ['onChange'],
-                }
+                },
               ],
             })}
           />
@@ -121,6 +150,8 @@ class FormExample1 extends React.Component {
               validates: [
                 {
                   rules: [{
+                    type: 'array',
+                    message: '最少选1个，最多选2个',
                     min: 1,
                     max: 2,
                   }],
@@ -181,8 +212,10 @@ class FormExample1 extends React.Component {
               validates: [
                 {
                   rules: [{
-                    min: 5,
+                    type: 'number',
+                    min: 2,
                     max: 10,
+                    message: '最小2，最大10',
                   }],
                   trigger: ['onChange'],
                 },

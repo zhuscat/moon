@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import formValidate from './FormValidate';
+import Validator from '../../utils/validate';
 import mustArray from '../../utils/array/mustArray';
 
 const DEFAUTL_VALUE_PROP_NAME = 'value';
@@ -119,18 +119,46 @@ function createForm(options = {}) {
       }
 
       validateFields(names) {
+        const descriptor = {};
         names.forEach((name) => {
           const meta = this.getFieldMeta(name);
-          const value = this.getFieldValue(name).value;
-          let errors = [];
           meta.validates.forEach(vali => {
-            errors = errors.concat(formValidate(value, vali.rules));
+            descriptor[name] = vali.rules;
           });
-          const field = this.getField(name);
-          field.errors = errors;
-          this.setFields({
-            [name]: field,
-          });
+          // const value = this.getFieldValue(name).value;
+          // let errors = [];
+          // meta.validates.forEach(vali => {
+          //   errors = errors.concat(formValidate(value, vali.rules));
+          // });
+          // const field = this.getField(name);
+          // field.errors = errors;
+          // this.setFields({
+          //   [name]: field,
+          // });
+        });
+        const fieldsNameValue = this.getFieldsNameValue();
+        const validator = new Validator(descriptor);
+        validator.validate(fieldsNameValue, (errors, fields) => {
+          if (!errors) {
+            names.forEach((name) => {
+              const newField = this.getField(name);
+              newField.errors = [];
+              this.setFields({
+                [name]: newField,
+              });
+            });
+          } else {
+            Object.keys(fields).forEach(fieldName => {
+              const newField = this.getField(fieldName);
+              const formatableErrors = fields[fieldName].map(e => {
+                return e.message;
+              });
+              newField.errors = formatableErrors;
+              this.setFields({
+                [fieldName]: newField,
+              });
+            });
+          }
         });
       }
 
