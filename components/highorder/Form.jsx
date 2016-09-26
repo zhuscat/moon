@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import Validator from '../../utils/validate';
 import mustArray from '../../utils/array/mustArray';
 
@@ -12,6 +12,7 @@ function getValueFromEvent(event) {
   return event.target.value;
 }
 
+// 暂时没有在 options 里面设置东西
 function createForm(options = {}) {
   function decorate(WrappedComponent) {
     class Form extends Component {
@@ -25,10 +26,14 @@ function createForm(options = {}) {
         this.getFieldErrors = this.getFieldErrors.bind(this);
         this.getFieldsNameValue = this.getFieldsNameValue.bind(this);
         this.getFieldValue = this.getFieldValue.bind(this);
+        this.getField = this.getField.bind(this);
+        this.validateFields = this.validateFields.bind(this);
+        this.isFieldValidating = this.isFieldValidating.bind(this);
+        this.isSubmitting = this.isSubmitting.bind(this);
+        this.submit = this.submit.bind(this);
         this.fieldsMeta = {};
         this.fields = {};
         this.actionCache = {};
-        this.validateFields = this.validateFields.bind(this);
         this.state = { isSubmitting: false };
       }
 
@@ -66,6 +71,7 @@ function createForm(options = {}) {
       }
 
       setFields(fields) {
+        // 直接覆盖同名 field
         const newFields = Object.assign({}, this.fields, fields);
         this.fields = newFields;
         this.forceUpdate();
@@ -80,15 +86,16 @@ function createForm(options = {}) {
         return this.fieldsMeta[name];
       }
 
-      getFieldProps(name, options = {}) {
+      getFieldProps(name, options_ = {}) {
         let {
           validates,
-        } = options;
+        } = options_;
         const {
           valuePropName,
           initialValue,
           displayName,
-        } = options;
+        } = options_;
+        // validates 一定是一个数组
         validates = mustArray(validates);
         const meta = {};
         meta.valuePropName = valuePropName || DEFAUTL_VALUE_PROP_NAME;
@@ -119,36 +126,64 @@ function createForm(options = {}) {
         return cache[eventType];
       }
 
-      validateFields(names) {
+      isFieldValidating(name) {
+        const field = this.getField(name);
+        if (field.validating) {
+          return true;
+        }
+        return false;
+      }
+
+      validateFields({ names, callback }) {
+        names = names || this.getValidFieldsName(); // eslint-disable-line no-param-reassign
         const descriptor = {};
+        const nameValues = this.getFieldsNameValue();
+        const newFields = {};
+        names.forEach((name) => {
+          const field = this.getField(name);
+          const meta = this.getFieldMeta(name);
+          const newField = Object.assign({}, field);
+          if (meta.validates && meta.validates.length !== 0) {
+            newField.validated = true;
+            newField.validating = true;
+          }
+          newField.value = this.getFieldValue(name).value;
+          newFields[name] = newField;
+        });
+        this.setFields(newFields);
         names.forEach((name) => {
           const meta = this.getFieldMeta(name);
           meta.validates.forEach(vali => {
             const rules = vali.rules.map(rule_ => {
-              const rule = rule_;
+              const rule = Object.assign({}, rule_);
               const displayName = rule.displayName || meta.displayName || name;
               rule.displayName = displayName;
               return rule;
             });
             descriptor[name] = rules;
           });
-          // const value = this.getFieldValue(name).value;
-          // let errors = [];
-          // meta.validates.forEach(vali => {
-          //   errors = errors.concat(formValidate(value, vali.rules));
-          // });
-          // const field = this.getField(name);
-          // field.errors = errors;
-          // this.setFields({
-          //   [name]: field,
-          // });
         });
         const fieldsNameValue = this.getFieldsNameValue();
         const validator = new Validator(descriptor);
         validator.validate(fieldsNameValue, (errors, fields) => {
+          // TODO: 这里需要合并相关逻辑，进行优化
+          names.forEach((name) => {
+            const newField = this.getField(name);
+            if (newField.value !== nameValues[name]) {
+              return;
+            }
+            newField.validating = false;
+            this.setFields({
+              [name]: newField,
+            });
+          })
           if (!errors) {
             names.forEach((name) => {
               const newField = this.getField(name);
+              if (newField.value !== nameValues[name]) {
+                return;
+              }
+              newField.validating = false;
               newField.errors = [];
               this.setFields({
                 [name]: newField,
@@ -157,14 +192,19 @@ function createForm(options = {}) {
           } else {
             Object.keys(fields).forEach(fieldName => {
               const newField = this.getField(fieldName);
-              const formatableErrors = fields[fieldName].map(e => {
-                return e.message;
-              });
+              if (newField.value !== nameValues[fieldName]) {
+                return;
+              }
+              const formatableErrors = fields[fieldName].map(e => e.message);
+              newField.validating = false;
               newField.errors = formatableErrors;
               this.setFields({
                 [fieldName]: newField,
               });
             });
+          }
+          if (callback) {
+            callback(errors, fields);
           }
         });
       }
@@ -180,20 +220,24 @@ function createForm(options = {}) {
 
       handleValidateChange(name, eventType, event) {
         const value = getValueFromEvent(event);
-        // need to improve
         const field = this.fields[name] = this.fields[name] || {};
         field.value = value;
         this.setFields({
           [name]: field,
         });
-        // validates.forEach(vali => {
-        //   if (vali.trigger.includes(eventType)) {
-        //     const rules = vali.rules;
-        //     errors = errors.concat(formValidate(value, rules));
-        //   }
-        // });
-        // field.errors = errors;
-        this.validateFields([name]);
+        this.validateFields({ names: [name] });
+      }
+
+      isSubmitting() {
+        return this.state.isSubmitting;
+      }
+
+      submit(callback) {
+        const fn = () => {
+          this.setState({ isSubmitting: false });
+        };
+        this.setState({ isSubmitting: true });
+        callback(fn);
       }
 
       render() {
@@ -202,7 +246,11 @@ function createForm(options = {}) {
           getFieldErrors: this.getFieldErrors,
           getFieldsNameValue: this.getFieldsNameValue,
           getFieldValue: this.getFieldValue,
+          getField: this.getField,
           validateFields: this.validateFields,
+          isFieldValidating: this.isFieldValidating,
+          isSubmitting: this.isSubmitting,
+          submit: this.submit,
         };
         return <WrappedComponent form={formProps} />;
       }

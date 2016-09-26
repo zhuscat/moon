@@ -1,11 +1,7 @@
-import mustArray from '../array/mustArray';
-import isEmptyArray from '../array/isEmptyArray';
-import isEmptyString from '../string/isEmptyString';
-import isNumber from '../number/isNumber';
-import isString from '../string/isString';
 import defaultValidator from './validator';
 import { noop } from '../../utils/default';
 import message from './message';
+import asyncPool from './async';
 
 function enhanceError(rule) {
   return (error_) => {
@@ -38,84 +34,6 @@ function getValidator(rule) {
     return defaultValidator[type];
   }
   return null;
-}
-
-function flattenSeries(series) {
-  const ret = [];
-  Object.keys(series).forEach(k => {
-    ret.push(...series[k]);
-  });
-  return ret;
-}
-
-function asyncEvery(arr, func, callback) {
-  const results = [];
-  let total = 0;
-  const arrLen = arr.length;
-  const count = errors => {
-    results.push(...errors);
-    total += 1;
-    if (total === arrLen) {
-      callback(results);
-    }
-  };
-  arr.forEach(a => {
-    func(a, count);
-  });
-}
-
-function asyncOneError(arr, func, callback) {
-  let index = 0;
-  const arrLen = arr.length;
-  const next = errors => {
-    if (errors && errors.length) {
-      callback(errors);
-      return;
-    }
-    const prev = index;
-    index += 1;
-    if (prev < arrLen) {
-      func(arr[prev], next);
-    } else {
-      callback([]);
-    }
-  };
-  next([]);
-}
-/**
- * series: {name: }
- *
- */
-function asyncPool(series, func, callback, options) {
-  // 验证直到出现第一个错误
-  if (options.first) {
-    const fseries = flattenSeries;
-    asyncOneError(fseries, func, callback);
-    return;
-  }
-  const keys = Object.keys(series);
-  const seriesLen = keys.length;
-  let total = 0;
-  const results = [];
-  const next = (errors) => {
-    results.push(...errors);
-    total += 1;
-    if (total === seriesLen) {
-      callback(results);
-    }
-  };
-  // 验证到每一个字段出现的第一个错误
-  if (options.firstField) {
-    keys.forEach(key => {
-      const arr = series[key];
-      asyncOneError(arr, func, next);
-    });
-  } else {
-    keys.forEach(key => {
-      const arr = series[key];
-      asyncEvery(arr, func, next);
-    });
-  }
 }
 
 const Validator = function Validator(descriptor) {
@@ -163,11 +81,12 @@ Validator.prototype.validate = function validate(fields_, callback = noop, optio
     callback(errors, fields);
   };
 
-
+  // 数据初始化
   const fields = fields_;
   const keys = Object.keys(this.rules);
   const options = options_;
   options.message = this.message;
+  // no rules
   if (!this.rules || keys.length === 0) {
     callback();
     return;
@@ -181,6 +100,7 @@ Validator.prototype.validate = function validate(fields_, callback = noop, optio
       const rule = r;
       rule.validator = getValidator(rule);
       rule.fieldName = fieldName;
+      // no validator
       if (!rule.validator) {
         return;
       }
@@ -194,7 +114,7 @@ Validator.prototype.validate = function validate(fields_, callback = noop, optio
     });
   });
 
-  asyncPool(series, (data, doIt) => {
+  const func = (data, doIt) => {
     const rule = data.rule;
     /*
      * the callback called by validator
@@ -212,9 +132,9 @@ Validator.prototype.validate = function validate(fields_, callback = noop, optio
       doIt(errors);
     };
     rule.validator(rule, data.value, cb, data.fields, options);
-  }, results => {
-    complete(results);
-  }, options);
+  };
+
+  asyncPool(series, func, complete, options);
 };
 
 export default Validator;

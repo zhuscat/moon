@@ -19,18 +19,21 @@ class FormExample1 extends React.Component {
   }
 
   passwordCheck(rule, value, callback, fields) {
-    this.props.form.validateFields(['passwordagain']);
-    callback('验证密码');
+    this.props.form.validateFields({ names: ['passwordagain'] });
+    if (value.length > 5 && value.length < 20) {
+      callback([]);
+    } else {
+      callback('密码长度大于5小于20');
+    }
   }
 
   render() {
     return (
-      <div>
+      <Form>
         <Form.FormItem
           label="email"
           labelCol={{span: 6}}
           wrapperCol={{span: 18}}
-          form={this.props.form}
         >
           <Input
             {...this.props.form.getFieldProps('email', {
@@ -42,9 +45,16 @@ class FormExample1 extends React.Component {
                     {
                       required: true,
                     },
+                    {
+                      validator: (rule, value, callback, fields) => {
+                        setTimeout(() => {
+                          callback([]);
+                        }, 1000);
+                      },
+                    }
                   ],
 
-                  trigger: ['onChange'],
+                  trigger: ['onChange', 'onBlur'],
                 },
               ],
             })}
@@ -54,7 +64,6 @@ class FormExample1 extends React.Component {
           label="account"
           labelCol={{span: 6}}
           wrapperCol={{span: 18}}
-          form={this.props.form}
         >
           <Input
             type="text"
@@ -75,7 +84,6 @@ class FormExample1 extends React.Component {
           label="stringstring"
           labelCol={{span: 6}}
           wrapperCol={{span: 18}}
-          form={this.props.form}
         >
           <Input
             type="text"
@@ -98,7 +106,6 @@ class FormExample1 extends React.Component {
           label="password"
           labelCol={{span: 6}}
           wrapperCol={{span: 18}}
-          form={this.props.form}
         >
           <Input
             type="password"
@@ -108,7 +115,6 @@ class FormExample1 extends React.Component {
                   rules: [{
                     required: true,
                     validator: this.passwordCheck,
-                    message: '必须要填写密码',
                   }],
                   trigger: ['onChange'],
                 },
@@ -120,7 +126,6 @@ class FormExample1 extends React.Component {
           label="password again"
           labelCol={{span: 6}}
           wrapperCol={{span: 18}}
-          form={this.props.form}
         >
           <Input
             type="password"
@@ -130,9 +135,13 @@ class FormExample1 extends React.Component {
                 {
                   rules: [{
                     validator: function(rule, value, callback, fields) {
-                      callback('email err');
+                      console.log('fields', fields);
+                      if (fields.password === value) {
+                        callback([]);
+                      } else {
+                        callback('两次输入密码不同')
+                      }
                     },
-                    message: '错误',
                   }],
                   trigger: ['onChange'],
                 },
@@ -144,7 +153,6 @@ class FormExample1 extends React.Component {
           label="checkbox group"
           labelCol={{span: 6}}
           wrapperCol={{span: 18}}
-          form={this.props.form}
         >
           <Checkbox.CheckboxGroup
             {...this.props.form.getFieldProps('checkboxgroup', {
@@ -167,7 +175,6 @@ class FormExample1 extends React.Component {
           label="radio group"
           labelCol={{span: 6}}
           wrapperCol={{span: 18}}
-          form={this.props.form}
         >
           <Radio.RadioGroup
             {...this.props.form.getFieldProps('radiogroup', {
@@ -180,7 +187,6 @@ class FormExample1 extends React.Component {
           label="select"
           labelCol={{span: 6}}
           wrapperCol={{span: 18}}
-          form={this.props.form}
         >
           <Select
             {...this.props.form.getFieldProps('select', {
@@ -193,7 +199,6 @@ class FormExample1 extends React.Component {
           label="select"
           labelCol={{span: 6}}
           wrapperCol={{span: 18}}
-          form={this.props.form}
         >
           <Switch
             {...this.props.form.getFieldProps('switch', {
@@ -205,7 +210,6 @@ class FormExample1 extends React.Component {
           label="select"
           labelCol={{span: 6}}
           wrapperCol={{span: 18}}
-          form={this.props.form}
         >
           <NumberInput
             {...this.props.form.getFieldProps('numberInput', {
@@ -226,17 +230,31 @@ class FormExample1 extends React.Component {
         </Form.FormItem>
         <Button
           onClick={() => {
-            console.log(this.props.form.getFieldsNameValue());
+            this.props.form.submit((func) => {
+              this.props.form.validateFields({
+                callback: (errors, fields) => {
+                  if (!errors || errors.length === 0) {
+                    setTimeout(() => {
+                      func();
+                      console.log('表单已经发送');
+                      console.log(this.props.form.getFieldsNameValue());
+                    }, 1000);
+                  } else {
+                    console.log('验证不通过, 请重新填写表单');
+                  }
+                }
+              });
+            });
           }}
         >
           点击提交
         </Button>
-      </div>
+      </Form>
     );
   }
 }
 
-const FormRet = createForm()(FormExample1);
+const FormRet = Form.create()(FormExample1);
 
 storiesOf('Form 表单', module)
   .add('Basic 基本', () => {
