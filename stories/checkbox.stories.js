@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf, action, linkTo } from '@kadira/storybook';
-import Checkbox from '../components/checkbox-in-lab';
+import Checkbox from '../components/checkbox';
 import '../style/base.scss';
 import '../style/icon/css/material-design-iconic-font.min.css';
 
@@ -32,7 +32,7 @@ class CheckboxExample2 extends React.Component {
   }
 }
 
-storiesOf('Checkbox in Lab 实验性选择框', module)
+storiesOf('Checkbox 选择框', module)
   .add('Basic 基本', () => {
     return (
       <Checkbox text="checkbox" />

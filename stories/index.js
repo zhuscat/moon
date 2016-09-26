@@ -3,14 +3,6 @@ import { storiesOf, action, linkTo } from '@kadira/storybook';
 import '../style/base.scss'
 import { Row, Col } from '../components/layout';
 import Button from '../components/Button';
-import FormItem from '../components/FormItem';
-import Input from '../components/Input';
-import FormControl from '../components/FormControl';
-import Form from '../components/Form';
-import Radio from '../components/Radio';
-import RadioGroup from '../components/RadioGroup';
-import CheckboxGroup from '../components/CheckboxGroup';
-import { COMPONENTS} from '../components/highorder/FormItem';
 
 const TestDiv = (props) =>
   <div style={{

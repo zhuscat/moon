@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf, action, linkTo } from '@kadira/storybook';
-import Input from '../components/input-in-lab';
+import Input from '../components/input';
 import '../style/base.scss';
 import '../style/icon/css/material-design-iconic-font.min.css';
 
@@ -22,8 +22,8 @@ class InputExample1 extends React.Component {
   }
 }
 
-storiesOf('Input in Lab 实验性输入框', module)
-  .add('Input 输入框', () => {
+storiesOf('Input 输入框', module)
+  .add('Basic 基本', () => {
     return (
       <div>
         <Input defaultValue="default value"/>

@@ -21,13 +21,21 @@ function enhanceError(rule) {
   };
 }
 
+function getType(rule) {
+  if (rule.type) {
+    return rule.type;
+  }
+  return 'string';
+}
+
 function getValidator(rule) {
+  const type = getType(rule);
   if (rule.validator) {
     return rule.validator;
-  } else if (rule.required) {
+  } else if (rule.required && Object.keys(rule).length === 1) {
     return defaultValidator.required;
-  } else if (rule.type) {
-    return defaultValidator[rule.type];
+  } else if (type) {
+    return defaultValidator[type];
   }
   return null;
 }
@@ -79,9 +87,11 @@ function asyncOneError(arr, func, callback) {
  *
  */
 function asyncPool(series, func, callback, options) {
+  // 验证直到出现第一个错误
   if (options.first) {
     const fseries = flattenSeries;
-    return asyncOneError(fseries, func, callback);
+    asyncOneError(fseries, func, callback);
+    return;
   }
   const keys = Object.keys(series);
   const seriesLen = keys.length;
@@ -94,10 +104,18 @@ function asyncPool(series, func, callback, options) {
       callback(results);
     }
   };
-  keys.forEach(key => {
-    const arr = series[key];
-    asyncEvery(arr, func, next);
-  });
+  // 验证到每一个字段出现的第一个错误
+  if (options.firstField) {
+    keys.forEach(key => {
+      const arr = series[key];
+      asyncOneError(arr, func, next);
+    });
+  } else {
+    keys.forEach(key => {
+      const arr = series[key];
+      asyncEvery(arr, func, next);
+    });
+  }
 }
 
 const Validator = function Validator(descriptor) {
@@ -176,7 +194,7 @@ Validator.prototype.validate = function validate(fields_, callback = noop, optio
     });
   });
 
-  asyncPool(series, (data, count) => {
+  asyncPool(series, (data, doIt) => {
     const rule = data.rule;
     /*
      * the callback called by validator
@@ -191,7 +209,7 @@ Validator.prototype.validate = function validate(fields_, callback = noop, optio
         errors = [].concat(rule.message);
       }
       errors = errors.map(enhanceError(rule));
-      count(errors);
+      doIt(errors);
     };
     rule.validator(rule, data.value, cb, data.fields, options);
   }, results => {

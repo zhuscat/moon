@@ -87,13 +87,14 @@ function createForm(options = {}) {
         const {
           valuePropName,
           initialValue,
+          displayName,
         } = options;
         validates = mustArray(validates);
-        console.log(name, validates);
         const meta = {};
         meta.valuePropName = valuePropName || DEFAUTL_VALUE_PROP_NAME;
         meta.validates = validates;
         meta.initialValue = initialValue;
+        meta.displayName = displayName;
         this.fieldsMeta[name] = meta;
         let inputProps = {};
         validates.forEach(vali => {
@@ -123,7 +124,13 @@ function createForm(options = {}) {
         names.forEach((name) => {
           const meta = this.getFieldMeta(name);
           meta.validates.forEach(vali => {
-            descriptor[name] = vali.rules;
+            const rules = vali.rules.map(rule_ => {
+              const rule = rule_;
+              const displayName = rule.displayName || meta.displayName || name;
+              rule.displayName = displayName;
+              return rule;
+            });
+            descriptor[name] = rules;
           });
           // const value = this.getFieldValue(name).value;
           // let errors = [];

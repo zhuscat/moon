@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf, action, linkTo } from '@kadira/storybook';
-import Radio from '../components/radio-in-lab';
+import Radio from '../components/radio';
 import '../style/base.scss';
 import '../style/icon/css/material-design-iconic-font.min.css';
 
@@ -31,7 +31,7 @@ class RadioExample2 extends React.Component {
   }
 }
 
-storiesOf('Radio in Lab 实验性单选框', module)
+storiesOf('Radio 单选框', module)
   .add('Basic 基本', () => {
     return (
       <Radio text="radio" />
