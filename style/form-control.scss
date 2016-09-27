@@ -22,6 +22,10 @@
 
 .zc-form-control-feedback {
   margin-top: 8px;
+  color: $sup-font-color;
+}
+
+.zc-form-control-feedback-error {
   color: $error-color;
 }
 

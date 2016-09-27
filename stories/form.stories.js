@@ -110,6 +110,7 @@ class FormExample1 extends React.Component {
           <Input
             type="password"
             {...this.props.form.getFieldProps('password', {
+              initialValue: '123456',
               validates: [
                 {
                   rules: [{

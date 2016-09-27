@@ -46,15 +46,7 @@ export default class FormItem extends Component {
     return null;
   }
 
-  isValidating() {
-    const name = this.props.children.props.name;
-    if (this.context.form.isFieldValidating(name)) {
-      return true;
-    }
-    return false;
-  }
-
-  renderField() {
+  getStatus() {
     let { status } = this.props;
     if (!status) {
       const name = this.props.children.props.name;
@@ -69,6 +61,19 @@ export default class FormItem extends Component {
         status = 'error';
       }
     }
+    return status;
+  }
+
+  isValidating() {
+    const name = this.props.children.props.name;
+    if (this.context.form.isFieldValidating(name)) {
+      return true;
+    }
+    return false;
+  }
+
+  renderField() {
+    const status = this.getStatus();
     const className = classNames({
       'feedback-icon': true,
       'zmdi-hc-li': true,
@@ -89,6 +94,21 @@ export default class FormItem extends Component {
     );
   }
 
+  renderErrors() {
+    const status = this.getStatus();
+    const errors = this.getErrors();
+    if (status === 'validating') {
+      return <div className="zc-form-control-feedback">正在验证中...</div>;
+    } else if (errors) {
+      return (
+        <div className="zc-form-control-feedback zc-form-control-feedback-error">
+        {this.getErrors()}
+        </div>
+      );
+    }
+    return null;
+  }
+
   renderStacked() {
     const {
       label,
@@ -104,8 +124,7 @@ export default class FormItem extends Component {
         <Row>
           <Col>
             {this.renderField()}
-            {this.getErrors() ?
-              <div className="zc-form-control-feedback">{this.getErrors()}</div> : null}
+            {this.renderErrors()}
           </Col>
         </Row>
       </div>
@@ -127,8 +146,7 @@ export default class FormItem extends Component {
           </Col>
           <Col {...wrapperCol}>
             {this.renderField()}
-            {this.getErrors() ?
-              <div className="zc-form-control-feedback">{this.getErrors()}</div> : null}
+            {this.renderErrors()}
           </Col>
         </Row>
       </div>
