@@ -1,0 +1,52 @@
+@import "./variables";
+
+.zc-carousel {
+  width: 600px;
+  height: 200px;
+  border: 1px solid $border-gary-color;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.zc-carousel-wrapper {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transition: $base-transition;
+  overflow: hidden;
+}
+
+.zc-carousel-img {
+  width: 100%;
+}
+
+.zc-carousel-button {
+  position: absolute;
+  top: 50%;
+  width: 36px;
+  height: 36px;
+  border-radius: 18px;
+  background-color: rgba(0, 0, 0, 0.4);
+  text-align: center;
+  transform: translateY(-50%);
+  opacity: 1;
+  transition: $base-transition;
+  cursor: pointer;
+  i {
+    color: #fff;
+    line-height: 36px;
+  }
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+  &.zc-carousel-button-left {
+    left: 16px;
+  }
+  &.zc-carousel-button-right {
+    right: 16px;
+  }
+  &.zc-carousel-button-hidden {
+    opacity: 0;
+  }
+}

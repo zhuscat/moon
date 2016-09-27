@@ -1,0 +1,41 @@
+@import "./variables";
+
+.zc-card {
+  width: 200px;
+  // height: 300px;
+  border: 1px solid $border-gary-color;
+  border-radius: 4px;
+  transition: $base-transition;
+  &:hover {
+    box-shadow: $base-box-shadow;
+  }
+}
+
+.zc-card-header {
+  font-size: $base-font-size;
+  color: $primary-font-color;
+  font-weight: bold;
+  height: 32px;
+  line-height: 32px;
+  text-indent: 8px;
+  border-bottom: 1px solid $border-gary-color;
+}
+
+.zc-card-body {
+  font-size: $base-font-size;
+  color: $primary-font-color;
+  height: 32px;
+  line-height: 32px;
+  text-indent: 8px;
+}
+
+.zc-card-footer {
+  font-size: $base-font-size;
+  color: $primary-font-color;
+  font-weight: bold;
+  height: 32px;
+  margin: 0 8px;
+  line-height: 32px;
+  text-indent: 8px;
+  border-top: 1px solid $border-gary-color;
+}

@@ -19,6 +19,8 @@ function loadStories() {
   require('../stories/switch.stories.js');
   require('../stories/numberInput.stories.js');
   require('../stories/datepicker.stories.js');
+  require('../stories/card.stories.js');
+  require('../stories/carousel.stories.js');
 }
 
 configure(loadStories, module);

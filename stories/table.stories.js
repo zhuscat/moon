@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf, action, linkTo } from '@kadira/storybook';
-import Table from '../components/Table';
+import Table from '../components/table';
 import '../style/base.scss'
 
 storiesOf('Table 表格', module)
@@ -21,6 +21,17 @@ storiesOf('Table 表格', module)
         title: '住址',
         dataPath: 'address',
       },
+      {
+        key: 'operation',
+        title: '操作',
+        render: (text, record, index) => (
+          <a onClick={() => {
+            console.log(text);
+            console.log(record);
+            console.log(index);
+          }}>发送数据</a>
+        ),
+      }
     ];
     const data = [
       {
