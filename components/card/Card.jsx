@@ -4,9 +4,7 @@ import '../../style/card.scss';
 const propTypes = {
   title: PropTypes.string,
   width: PropTypes.string,
-  headerRender: PropTypes.func,
-  bodyRender: PropTypes.func,
-  footerRender: PropTypes.func,
+  children: PropTypes.any,
 };
 
 const defaultProps = {
@@ -19,12 +17,11 @@ export default class Card extends Component {
     return (
       <div className="zc-card">
         <div className="zc-card-header">
-          标题
+          {this.props.title}
         </div>
         <div className="zc-card-body">
-          你怎么知道
+          {this.props.children}
         </div>
-        <div className="zc-card-footer"></div>
       </div>
     );
   }

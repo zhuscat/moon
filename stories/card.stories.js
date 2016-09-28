@@ -6,6 +6,8 @@ import '../style/base.scss'
 storiesOf('Card 卡片', module)
   .add('Basic 基本', () => {
     return (
-      <Card />
+      <Card title="基本">
+        这是基本的
+      </Card>
     );
   })

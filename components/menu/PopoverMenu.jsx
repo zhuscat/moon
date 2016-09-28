@@ -67,6 +67,7 @@ export default class PopoverMenu extends Component {
       closeSubMenuOnMouseLeave: this.props.closeSubMenuOnMouseLeave,
       onSelect: this.props.onSelect,
       onDeselect: this.props.onDeselect,
+      type: 'vertical',
     });
   }
 

@@ -15,27 +15,13 @@
   font-size: $base-font-size;
   color: $primary-font-color;
   font-weight: bold;
-  height: 32px;
-  line-height: 32px;
-  text-indent: 8px;
+  padding: 8px 16px;
   border-bottom: 1px solid $border-gary-color;
 }
 
 .zc-card-body {
   font-size: $base-font-size;
   color: $primary-font-color;
-  height: 32px;
-  line-height: 32px;
-  text-indent: 8px;
-}
-
-.zc-card-footer {
-  font-size: $base-font-size;
-  color: $primary-font-color;
-  font-weight: bold;
-  height: 32px;
-  margin: 0 8px;
-  line-height: 32px;
-  text-indent: 8px;
-  border-top: 1px solid $border-gary-color;
+  line-height: $line-height-base;
+  padding: 8px 16px;
 }

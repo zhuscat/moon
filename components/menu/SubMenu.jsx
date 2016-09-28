@@ -27,6 +27,7 @@ const propTypes = {
 };
 
 const defaultProps = {
+  type: 'horizontal',
   title: '',
   zIndex: 999,
   openSubMenuOnMouseEnter: true,
