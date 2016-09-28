@@ -22,5 +22,35 @@
 
 .zc-form-control-feedback {
   margin-top: 8px;
+  color: $sup-font-color;
+}
+
+.zc-form-control-feedback-error {
+  color: $error-color;
+}
+
+.zc-form-control-wrapper {
+  position: relative;
+}
+
+.feedback-icon {
+  left: auto;
+  right: 0;
+  // TODO: top is a fixed number, change it?
+  top: 8px;
+  color: $primary-color;
+  bottom: auto;
+  position: absolute;
+}
+
+.feedback-icon-success {
+  color: $success-color;
+}
+
+.feedback-icon-alert {
+  color: $warning-color;
+}
+
+.feedback-icon-error {
   color: $error-color;
 }

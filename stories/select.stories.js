@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf, action, linkTo } from '@kadira/storybook';
-import Select from '../components/select-in-lab';
+import Select from '../components/select';
 import '../style/base.scss';
 import '../style/icon/css/material-design-iconic-font.min.css';
 
@@ -36,7 +36,7 @@ class SelectExample1 extends React.Component {
 //   }
 // }
 
-storiesOf('Select in Lab 实验性选择框', module)
+storiesOf('Select 选择下拉框', module)
   .add('Basic 基本', () => {
     const options = ['movie', 'book', 'music'];
     return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf, action, linkTo } from '@kadira/storybook';
-import Switch from '../components/switch-in-lab';
+import Switch from '../components/switch';
 import '../style/base.scss';
 import '../style/icon/css/material-design-iconic-font.min.css';
 
@@ -18,7 +18,7 @@ class SwitchExample1 extends React.Component {
   }
 }
 
-storiesOf('Switch in Lab 实验性开关', module)
+storiesOf('Switch 开关', module)
   .add('Basic 基本', () => {
     return (
       <Switch />

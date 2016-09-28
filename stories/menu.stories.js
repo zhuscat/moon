@@ -26,6 +26,8 @@ class MenuExample1 extends React.Component {
         onClick={this.onClick}
         onSelect={e => console.log(e)}
         onDeselect={e => console.log(e)}
+        openSubMenuOnMouseEnter={false}
+        closeSubMenuOnMouseLeave={false}
       >
         <Menu.MenuItem key="home">首页</Menu.MenuItem>
         <Menu.MenuItem
@@ -75,6 +77,8 @@ class MenuExample2 extends React.Component {
         onSelect={e => console.log(e)}
         onDeselect={e => console.log(e)}
         type="vertical"
+        openSubMenuOnMouseEnter={false}
+        closeSubMenuOnMouseLeave={false}
       >
         <Menu.MenuItem key="home">首页</Menu.MenuItem>
         <Menu.MenuItem

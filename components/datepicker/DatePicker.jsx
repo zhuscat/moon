@@ -1,13 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
-import NumberInput from './NumberInput';
-import { register } from './highorder/FormItem';
-import * as datetime from '../utils/datetime';
-import '../style/datepicker.scss';
+import NumberInput from '../number-input';
+import { noop } from '../../utils/default';
+import * as datetime from '../../utils/datetime';
+import '../../style/datepicker.scss';
 
 const propTypes = {
-  date: PropTypes.object.isRequired,
-  onDateClick: PropTypes.func,
+  value: PropTypes.object,
+  defaultValue: PropTypes.object,
   onChange: PropTypes.func,
   type: PropTypes.string.isRequired,
   format: PropTypes.string,
@@ -15,21 +15,25 @@ const propTypes = {
 };
 
 const defaultProps = {
-  date: new Date(),
+  defaultValue: new Date(),
   type: 'date',
   zIndex: 999,
+  onChange: noop,
 };
 
-class DatePicker extends Component {
+export default class DatePicker extends Component {
   constructor(props) {
     super(props);
+    let value = props.defaultValue;
+    if ('value' in props) {
+      value = props.value;
+    }
     // contentType date | month | year
     this.state = {
-      date: this.props.date,
+      value,
       contentType: 'date',
       open: false,
     };
-    this.handleDateClick = this.handleDateClick.bind(this);
     this.handleInputClick = this.handleInputClick.bind(this);
     this.handleHourChange = this.handleHourChange.bind(this);
     this.handleMinuteChange = this.handleMinuteChange.bind(this);
@@ -39,6 +43,12 @@ class DatePicker extends Component {
 
   componentDidMount() {
     document.addEventListener('mousedown', this.onOutsideClick);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if ('value' in nextProps) {
+      this.setState({ value: nextProps.value });
+    }
   }
 
   componentWillUnmount() {
@@ -54,21 +64,20 @@ class DatePicker extends Component {
     let source = e.target;
 
     while (source.parentNode) {
-      console.log(source);
       if (source === this.datePicker || source === this.input) {
         return;
       }
       source = source.parentNode;
     }
 
-    console.log('set open false');
-
     this.setState({ open: false });
   }
 
   handleChange(value) {
-    if (this.props.onChange) {
+    if ('value' in this.props) {
       this.props.onChange(value);
+    } else {
+      this.setState({ value });
     }
   }
 
@@ -79,55 +88,63 @@ class DatePicker extends Component {
     this.setState({ open: !this.state.open });
   }
 
-  handleDateClick(date) {
-    if (this.props.onDateClick) {
-      this.props.onDateClick(date);
-    }
-    this.setState({ date });
-    this.handleChange(date);
-  }
-
   handleHourChange(value) {
-    console.log(`handle hour change ${value}`);
-    const d = datetime.cloneDate(this.state.date);
+    const d = datetime.cloneDate(this.state.value);
     d.setHours(value);
-    this.setState({ date: d, open: true });
-    this.handleChange(d);
+    this.setState({ open: true });
+    if ('value' in this.props) {
+      this.props.onChange(d);
+    } else {
+      this.setState({ value: d });
+    }
   }
 
   handleMinuteChange(value) {
-    const d = datetime.cloneDate(this.state.date);
+    const d = datetime.cloneDate(this.state.value);
     d.setMinutes(value);
-    console.log(d);
-    this.setState({ date: d, open: true });
-    this.handleChange(d);
+    this.setState({ open: true });
+    if ('value' in this.props) {
+      this.props.onChange(d);
+    } else {
+      this.setState({ value: d });
+    }
   }
 
   handleYearButtonClick(value) {
-    const d = datetime.cloneDate(this.state.date);
+    const d = datetime.cloneDate(this.state.value);
     d.setFullYear(value);
-    this.setState({ date: d, contentType: 'date' });
+    this.setState({ contentType: 'date' });
+    if ('value' in this.props) {
+      this.props.onChange(d);
+    } else {
+      this.setState({ value: d });
+    }
   }
 
   handleMonthButtonClick(value) {
-    const d = datetime.cloneDate(this.state.date);
+    const d = datetime.cloneDate(this.state.value);
     d.setMonth(value - 1);
-    this.setState({ date: d, contentType: 'date' });
+    this.setState({ contentType: 'date' });
+    if ('value' in this.props) {
+      this.props.onChange(d);
+    } else {
+      this.setState({ value: d });
+    }
   }
 
   renderInputDate() {
     const { type, format } = this.props;
-    const { date } = this.state;
+    const { value } = this.state;
     if (format) {
-      return datetime.format(date, format);
+      return datetime.format(value, format);
     }
     switch (type) {
       case 'date':
-        return datetime.format(date, 'yyyy/MM/dd');
+        return datetime.format(value, 'yyyy/MM/dd');
       case 'datetime':
-        return datetime.format(date, 'yyyy/MM/dd hh: mm');
+        return datetime.format(value, 'yyyy/MM/dd hh: mm');
       default:
-        return datetime.format(date, 'yyyy/MM/dd hh: mm');
+        return datetime.format(value, 'yyyy/MM/dd hh: mm');
     }
   }
 
@@ -146,24 +163,30 @@ class DatePicker extends Component {
   }
 
   renderDateSelect() {
-    const monthDaysArray = datetime.getMonthDaysArray(this.state.date);
-    const currMonth = this.state.date.getMonth();
-    return monthDaysArray.map(row =>
-      <tr className="zc-calendar-body-row">
-        {row.map(col => {
+    const monthDaysArray = datetime.getMonthDaysArray(this.state.value);
+    const currMonth = this.state.value.getMonth();
+    return monthDaysArray.map((row, idx) =>
+      <tr
+        key={`zc-date-select-row-${idx}`}
+        className="zc-calendar-body-row"
+      >
+        {row.map((col, cIdx) => {
           const colClassName = classNames({
             'zc-calendar-body-col': true,
             'zc-calendar-body-column-disabled': col.getMonth() !== currMonth,
           });
           const dateClassName = classNames({
             'zc-calendar-date': true,
-            'zc-calendar-date-active': datetime.sameDay(col, this.state.date),
+            'zc-calendar-date-active': datetime.sameDay(col, this.state.value),
           });
           return (
-            <td className={colClassName}>
+            <td
+              key={`zc-date-select-col-${cIdx}`}
+              className={colClassName}
+            >
               <div
                 className={dateClassName}
-                onClick={() => { this.handleDateClick(col); }}
+                onClick={() => { this.handleChange(col); }}
               >
                 {col.getDate()}
               </div>
@@ -175,7 +198,7 @@ class DatePicker extends Component {
   }
 
   renderMonthSelect() {
-    const month = this.state.date.getMonth() + 1;
+    const month = this.state.value.getMonth() + 1;
     const monthArray = [];
     const monthRowArray = [];
     for (let i = 1; i <= 12; i += 1) {
@@ -187,15 +210,21 @@ class DatePicker extends Component {
       const rowArray = monthArray.splice(0, 4);
       monthRowArray.push(rowArray);
     }
-    return monthRowArray.map(row =>
-      <tr className="zc-calendar-body-row">
-        {row.map(col => {
+    return monthRowArray.map((row, idx) =>
+      <tr
+        key={`zc-month-select-row-${idx}`}
+        className="zc-calendar-body-row"
+      >
+        {row.map((col, cIdx) => {
           const calendarMonthClassName = classNames({
             'zc-calendar-year': true,
             'zc-calendar-year-active': month === col.value,
           });
           return (
-            <td className="zc-calendar-year-col">
+            <td
+              key={`zc-month-select-col-${cIdx}`}
+              className="zc-calendar-year-col"
+            >
               <div
                 className={calendarMonthClassName}
                 onClick={() => this.handleMonthButtonClick(col.value)}
@@ -210,8 +239,8 @@ class DatePicker extends Component {
   }
 
   renderYearSelect() {
-    const { date } = this.state;
-    const fullYear = date.getFullYear();
+    const { value } = this.state;
+    const fullYear = value.getFullYear();
     const yearArray = [];
     const yearRowArray = [];
     for (let i = fullYear - 9; i <= fullYear + 10; i++) {
@@ -223,16 +252,22 @@ class DatePicker extends Component {
       const rowArray = yearArray.splice(0, 4);
       yearRowArray.push(rowArray);
     }
-    return yearRowArray.map(row =>
-      <tr className="zc-calendar-body-row">
-        {row.map(col => {
+    return yearRowArray.map((row, idx) =>
+      <tr
+        key={`zc-year-select-row-${idx}`}
+        className="zc-calendar-body-row"
+      >
+        {row.map((col, cIdx) => {
           const year = col.value;
           const calendarYearClassName = classNames({
             'zc-calendar-year': true,
             'zc-calendar-year-active': fullYear === year,
           });
           return (
-            <td className="zc-calendar-year-col">
+            <td
+              key={`zc-year-select-col-${cIdx}`}
+              className="zc-calendar-year-col"
+            >
               <div
                 className={calendarYearClassName}
                 onClick={() => this.handleYearButtonClick(year)}
@@ -253,9 +288,9 @@ class DatePicker extends Component {
           className="zc-calendar-button zc-calendar-button-prev-year"
           type="button"
           onClick={() => {
-            const date = datetime.cloneDate(this.state.date);
+            const date = datetime.cloneDate(this.state.value);
             date.setFullYear(date.getFullYear() - 20);
-            this.setState({ date });
+            this.setState({ value: date });
             this.handleChange(date);
           }}
         >
@@ -265,15 +300,15 @@ class DatePicker extends Component {
           className="zc-calendar-year-select"
           onClick={() => this.setState({ contentType: 'date' })}
         >
-          {`${this.state.date.getFullYear()}年`}
+          {`${this.state.value.getFullYear()}年`}
         </a>
         <a
           className="zc-calendar-button zc-calendar-button-next-year"
           type="button"
           onClick={() => {
-            const date = datetime.cloneDate(this.state.date);
+            const date = datetime.cloneDate(this.state.value);
             date.setFullYear(date.getFullYear() + 20);
-            this.setState({ date });
+            this.setState({ value: date });
             this.handleChange(date);
             console.log(date);
           }}
@@ -299,9 +334,9 @@ class DatePicker extends Component {
           className="zc-calendar-button zc-calendar-button-prev-year"
           type="button"
           onClick={() => {
-            const date = datetime.cloneDate(this.state.date);
+            const date = datetime.cloneDate(this.state.value);
             date.setMonth(date.getMonth() - 1);
-            this.setState({ date });
+            this.setState({ value: date });
             this.handleChange(date);
           }}
         >
@@ -311,15 +346,15 @@ class DatePicker extends Component {
           className="zc-calendar-year-select"
           onClick={() => this.setState({ contentType: 'date' })}
         >
-          {`${this.state.date.getMonth() + 1}月`}
+          {`${this.state.value.getMonth() + 1}月`}
         </a>
         <a
           className="zc-calendar-button zc-calendar-button-next-year"
           type="button"
           onClick={() => {
-            const date = datetime.cloneDate(this.state.date);
+            const date = datetime.cloneDate(this.state.value);
             date.setMonth(date.getMonth() + 1);
-            this.setState({ date });
+            this.setState({ value: date });
             this.handleChange(date);
           }}
         >
@@ -339,13 +374,13 @@ class DatePicker extends Component {
 
   renderCalendarContent() {
     const renderArray = [
-      <div className="zc-calendar-header">
+      <div className="zc-calendar-header" key="zc-calendar-content-header">
         <a
           className="zc-calendar-button zc-calendar-button-prev-year"
           type="button"
           onClick={() => {
-            const date = datetime.prevYearDate(this.state.date);
-            this.setState({ date });
+            const date = datetime.prevYearDate(this.state.value);
+            this.setState({ value: date });
             this.handleChange(date);
           }}
         >
@@ -355,8 +390,8 @@ class DatePicker extends Component {
           className="zc-calendar-button zc-calendar-button-prev-month"
           type="button"
           onClick={() => {
-            const date = datetime.prevMonthDate(this.state.date);
-            this.setState({ date });
+            const date = datetime.prevMonthDate(this.state.value);
+            this.setState({ value: date });
             this.handleChange(date);
           }}
         >
@@ -366,20 +401,20 @@ class DatePicker extends Component {
           className="zc-calendar-year-select"
           onClick={() => this.setState({ contentType: 'year' })}
         >
-          {`${this.state.date.getFullYear()}年`}
+          {`${this.state.value.getFullYear()}年`}
         </a>
         <a
           className="zc-calendar-month-select"
           onClick={() => this.setState({ contentType: 'month' })}
         >
-          {`${this.state.date.getMonth() + 1}月`}
+          {`${this.state.value.getMonth() + 1}月`}
         </a>
         <a
           className="zc-calendar-button zc-calendar-button-next-month"
           type="button"
           onClick={() => {
-            const date = datetime.nextMonthDate(this.state.date);
-            this.setState({ date });
+            const date = datetime.nextMonthDate(this.state.value);
+            this.setState({ value: date });
             this.handleChange(date);
           }}
         >
@@ -389,16 +424,15 @@ class DatePicker extends Component {
           className="zc-calendar-button zc-calendar-button-next-year"
           type="button"
           onClick={() => {
-            const date = datetime.nextYearDate(this.state.date);
-            this.setState({ date });
+            const date = datetime.nextYearDate(this.state.value);
+            this.setState({ value: date });
             this.handleChange(date);
-            console.log(date);
           }}
         >
           »
         </a>
       </div>,
-      <div className="zc-calendar-body">
+      <div className="zc-calendar-body" key="zc-calendar-content-body">
         <table className="zc-calendar-table">
           <thead className="zc-calendar-head">
             <tr className="zc-calendar-head-row">
@@ -435,14 +469,14 @@ class DatePicker extends Component {
           <NumberInput
             min={0}
             max={23}
-            value={this.state.date.getHours()}
-            itemChange={this.handleHourChange}
+            value={this.state.value.getHours()}
+            onChange={this.handleHourChange}
           />
           <NumberInput
             min={0}
             max={59}
-            value={this.state.date.getMinutes()}
-            itemChange={this.handleMinuteChange}
+            value={this.state.value.getMinutes()}
+            onChange={this.handleMinuteChange}
           />
         </div> : null,
     ];
@@ -490,5 +524,3 @@ class DatePicker extends Component {
 
 DatePicker.propTypes = propTypes;
 DatePicker.defaultProps = defaultProps;
-
-export default register(DatePicker, ['date', 'datetime']);

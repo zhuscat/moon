@@ -35,7 +35,7 @@
 
 .zc-menu-item-vertical {
   @extend %zc-menu-item-base;
-  width: 100px;
+  width: 100%;
   display: block;
   &.zc-menu-item-active, &:hover {
     color: $primary-color;
@@ -50,7 +50,7 @@
 
 .zc-sub-menu-item-vertical {
   @extend %zc-menu-item-base;
-  width: 100px;
+  width: 100%;
   display: block;
   position: relative;
 }
@@ -60,7 +60,7 @@
   cursor: not-allowed;
   &:hover {
     color: $disabled-font-color;
-    border-bottom: none;
+    // border-bottom: none;
   }
 }
 
@@ -74,7 +74,7 @@
   cursor: not-allowed;
   &:hover {
     color: $disabled-font-color;
-    border-bottom: none;
+    // border-bottom: none;
   }
 }
 

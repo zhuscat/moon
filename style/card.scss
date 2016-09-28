@@ -1,0 +1,27 @@
+@import "./variables";
+
+.zc-card {
+  width: 200px;
+  // height: 300px;
+  border: 1px solid $border-gary-color;
+  border-radius: 4px;
+  transition: $base-transition;
+  &:hover {
+    box-shadow: $base-box-shadow;
+  }
+}
+
+.zc-card-header {
+  font-size: $base-font-size;
+  color: $primary-font-color;
+  font-weight: bold;
+  padding: 8px 16px;
+  border-bottom: 1px solid $border-gary-color;
+}
+
+.zc-card-body {
+  font-size: $base-font-size;
+  color: $primary-font-color;
+  line-height: $line-height-base;
+  padding: 8px 16px;
+}

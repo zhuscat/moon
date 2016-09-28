@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import '../style/table.scss';
+import '../../style/table.scss';
 
 const propTypes = {
   data: PropTypes.array.isRequired,
@@ -32,12 +32,20 @@ export default class Table extends Component {
           </tr>
         </thead>
         <tbody>
-          {data.map(row => {
+          {data.map((row, idx) => {
             return (
               <tr key={row.key} className={rowClassName}>
-                {columns.map(column => {
+                {columns.map((column) => {
                   const d = row[column.dataPath];
-                  return <td key={column.key} className="zc-table-td">{d}</td>;
+                  if (column.render) {
+                    return (
+                      <td>
+                        {column.render(d, data[idx], idx)}
+                      </td>
+                    );
+                  } else {
+                    return <td key={column.key} className="zc-table-td">{d}</td>;
+                  }
                 })}
               </tr>
             );

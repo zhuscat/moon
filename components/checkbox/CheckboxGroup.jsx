@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import Checkbox from './Checkbox';
 import { noop } from '../../utils/default';
+import '../../style/checkboxgroup.scss';
 
 const propTypes = {
   value: PropTypes.oneOfType([

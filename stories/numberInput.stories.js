@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf, action, linkTo } from '@kadira/storybook';
-import NumberInput from '../components/number-input-in-lab';
+import NumberInput from '../components/number-input';
 import '../style/base.scss';
 import '../style/icon/css/material-design-iconic-font.min.css';
 
@@ -36,7 +36,7 @@ class NumberInputExample1 extends React.Component {
 //   }
 // }
 
-storiesOf('NumberInput in Lab 实验性数字输入框', module)
+storiesOf('NumberInput 数字输入框', module)
   .add('Basic 基本', () => {
     return (
       <NumberInput max={10} min={1} defaultValue={2} />
