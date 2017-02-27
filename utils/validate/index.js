@@ -1,3 +1,4 @@
+// learn from https://github.com/yiminghe/async-validator
 import defaultValidator from './validator';
 import { noop } from '../../utils/default';
 import message from './message';
